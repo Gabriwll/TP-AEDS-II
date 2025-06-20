@@ -130,7 +130,7 @@ Arvore InsereEntre(char *k, Arvore *t, short i,char diferente,int N_arquivo){
         return (CriaNoInt(t,&p,i,diferente));
       }
     } else {
-      
+
       // Inserção recursiva nos filhos esquerdo ou direito do nó interno
       if (k[(*t)->NO.NInterno.indice] < (*t)->NO.NInterno.caractere)
         (*t)->NO.NInterno.Esq = InsereEntre(k,&(*t)->NO.NInterno.Esq,i,diferente,N_arquivo);
@@ -139,3 +139,74 @@ Arvore InsereEntre(char *k, Arvore *t, short i,char diferente,int N_arquivo){
       return (*t);
     }
 }
+
+/**
+ * @brief Insere uma chave na árvore PATRICIA.
+ * 
+ * Se a chave já existir, incrementa o contador de ocorrência para o arquivo indicado.
+ * Caso contrário, realiza a inserção apropriada.
+ * 
+ * @param k Chave a ser inserida.
+ * @param t Ponteiro para o nó raiz da árvore.
+ * @param N_arquivo Número do arquivo para contabilizar ocorrências.
+ * @param qtd_pala Ponteiro para contador de palavras inseridas na árvore.
+ * 
+ * @return Arvore Ponteiro para a raiz da árvore após inserção.
+ */
+Arvore Insere(char *k, Arvore *t,int N_arquivo, int *qtd_pala)
+{
+    Arvore p;
+    int i,j;
+    char caux,cdif;
+
+    if ((*t) == NULL){
+      // Árvore vazia: cria nó externo diretamente.
+      return (CriaNoExt(k,t,N_arquivo));
+    }
+    else{
+        p = (*t);
+        // Desce até o nó folha onde a chave pode estar ou deve ser inserida
+        while (!EExterno(p))
+        {
+            caux = k[p->NO.NInterno.indice];
+
+            if (caux < p->NO.NInterno.caractere)
+                p = p->NO.NInterno.Esq;
+            else if(caux >= p->NO.NInterno.caractere) 
+                p = p->NO.NInterno.Dir;
+            else
+              p = p->NO.NInterno.Esq;
+        }
+
+        // Se chave já está na árvore, incrementa contagem de repetição para arquivo
+        /* acha o primeiro Caractere diferente */
+        i = 0;
+        if(strcmp(p->NO.folha,k) == 0){
+          for(j=0;j<M;j++){
+              if(j == (N_arquivo - 1)){
+                p->V[j].repeticao++;
+              }
+          }
+          return (*t);
+        }
+        else{
+          // Encontra o primeiro índice onde as chaves diferem
+          int tam = (strlen(k) < strlen(p->NO.folha))? strlen(k) : strlen(p->NO.folha);
+          for(i=0;i<= tam;i++){
+            if(k[i] != p->NO.folha[i]){
+              if(k[i] < p->NO.folha[i]){
+                cdif = p->NO.folha[i];
+                break;
+              } else{
+                cdif = k[i];
+                break;
+              }
+            }
+          }
+          (*qtd_pala)++; ///< Incrementa contador de palavras distintas inseridas.
+          // Insere a chave na posição correta da árvore, criando um novo nó interno se necessário
+          return (InsereEntre(k, t, i, cdif, N_arquivo));
+        }
+    }
+}
+
