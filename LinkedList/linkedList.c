@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-//#include "../InvertedIndex/invertedIndex.h"
+#include "../InvertedIndex/invertedIndex.h"
 #include "linkedList.h"
 
 void initializeList(List** list){
@@ -12,7 +13,7 @@ void initializeList(List** list){
     (*list)->end = NULL;
 }
 
-void addCell(List* list, Item item){
+Cell* addCell(List* list, Item item){
     Cell* newCell = (Cell*)malloc(sizeof(Cell));
     newCell->item = item;
     newCell->next = NULL;
@@ -26,16 +27,16 @@ void addCell(List* list, Item item){
     }
 
     list->sizeOfList++;
+    return newCell;
 }
 
 int removeCell(List* list, Item item){
     Cell* currentCell = list->begin;
     Cell* previousCell = NULL;
 
-    while(currentCell != NULL && currentCell->item != item){
-        //FIXME: Desenvolvido para uso com o tipo Item int
-        //Adaptar para usar o item de tipo Word
-        //if(currentCell->item.word == item.word) break; // Assuming Item has a member 'word'
+    while(currentCell != NULL && currentCell->item.searchTerm.idDoc == item.searchTerm.idDoc && 
+                                 strcmp(currentCell->item.word, item.word) == 0){
+                                 //TODO: check if this is the right way to compare items
         previousCell = currentCell;
         currentCell = currentCell->next;
     }
@@ -54,6 +55,19 @@ int removeCell(List* list, Item item){
 
     free(currentCell);
     list->sizeOfList--;
+}
+
+Cell* searchCellByWord(List* list, Item item){
+    Cell* currentCell = list->begin;
+
+    while(currentCell != NULL){
+        if(currentCell->item.searchTerm.idDoc == item.searchTerm.idDoc &&
+           strcmp(currentCell->item.word, item.word) == 0) return currentCell;
+
+        currentCell = currentCell->next;
+    }
+
+    return NULL;
 }
 
 void freeList(List* list){
@@ -79,6 +93,9 @@ void printList(List list){
     }
 }
 
+/*Ambiente de testes destinado a esse TAD
+* FIXME: adaptar esse ambiente de testes para o tipo Word
+* Uma alternativa seria manter esse ambiente em um branch secundário, a fim de uso na entrevista
 int main(){
     List* list;
     Item item = 0;
@@ -98,3 +115,4 @@ int main(){
 
     return 0;
 }
+*/

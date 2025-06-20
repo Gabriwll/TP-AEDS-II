@@ -1,8 +1,8 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-//typedef Word Item;
-typedef int Item;
+typedef Word Item;
+//typedef int Item;
 
 typedef struct Cell{
     Item item;
@@ -16,8 +16,9 @@ typedef struct List{
 }List;
 
 void initializeList(List** list);
-void addCell(List* list, Item item);
+Cell* addCell(List* list, Item item);
 int removeCell(List* list, Item item);
+Cell* searchCellByWord(List* list, Item item);
 void freeList(List* list);
 void printList(List list);
 
