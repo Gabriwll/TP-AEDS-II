@@ -1,0 +1,34 @@
+# --------- Informações do Projeto ---------
+PROJECT_NAME           = "TP-AEDSII: PATRICIA e Hash"
+PROJECT_BRIEF          = "Trabalho Prático de AEDS 2 com árvore PATRICIA e tabela Hash"
+OUTPUT_DIRECTORY       = docs
+GENERATE_LATEX         = NO
+
+# --------- Entrada ---------
+INPUT                  = Patricia Hash TextManager
+FILE_PATTERNS          = *.c *.h
+RECURSIVE              = YES
+
+# --------- Saída HTML ---------
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+
+# --------- Comentários ---------
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+JAVADOC_AUTOBRIEF      = YES
+QT_AUTOBRIEF           = YES
+
+# --------- Gráficos e Diagramas ---------
+HAVE_DOT               = YES
+CLASS_DIAGRAMS         = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+DOT_NUM_THREADS        = 2
+DOT_PATH               = C:/Program Files/Graphviz/bin  # No Linux: /usr/bin/dot
+
+# --------- Avisos ---------
+WARN_IF_UNDOCUMENTED   = YES
+WARN_NO_PARAMDOC       = YES

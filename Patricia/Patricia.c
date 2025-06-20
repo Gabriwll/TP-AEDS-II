@@ -11,7 +11,6 @@
  * @author Raíssa Tayná
  */
 short EExterno(Arvore p){
-  assert(p != NULL); // Garante que o ponteiro não é nulo
   return (p->nt == Externo); // Retorna verdadeiro se o tipo do nó for Externo
 }
 
@@ -251,3 +250,44 @@ void ordena(Arvore t) {
     ordena(t->NO.NInterno.Dir); ///< Percorre filho direito recursivamente.
   }
 }
+
+/*
+int main() {
+    Arvore raiz = NULL;
+    int qtd_palavras = 0;
+
+    // Algumas palavras para teste
+    char *palavras[] = {
+        "casa",
+        "carro",
+        "casaco",
+        "cabra",
+        "cachorro",
+        "casa",     // palavra repetida, deve incrementar repetição
+        "cacto"
+    };
+
+    int arquivos[] = {1, 2, 1, 3, 2, 1, 1};  // índices de arquivo arbitrários para teste
+
+    int n = sizeof(palavras)/sizeof(palavras[0]);
+
+    for (int i = 0; i < n; i++) {
+        raiz = Insere(palavras[i], &raiz, arquivos[i], &qtd_palavras);
+    }
+
+    printf("\n\n=== Impressão da árvore PATRICIA ===\n");
+    ordena(raiz);
+
+    // Teste de busca
+    char *busca = "cabra";
+    Arvore resultado = Pesquisa(busca, &raiz);
+    if (resultado != NULL) {
+        printf("\nPalavra '%s' encontrada!\n", busca);
+        imprime(resultado);
+    } else {
+        printf("\nPalavra '%s' NÃO encontrada.\n", busca);
+    }
+
+    return 0;
+}
+*/

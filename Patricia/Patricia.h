@@ -1,5 +1,5 @@
-#ifndef patricia.h
-#define patricia.h
+#ifndef PATRICIA_H
+#define PATRICIA_H
 
 #define M 5 //nº de arquivos
 
@@ -42,4 +42,4 @@ Arvore Insere(char *k, Arvore *t,int,int *);
 void imprime(Arvore t);
 void ordena(Arvore t);
 
-#endif  // patricia.h
+#endif // PATRICIA_H
