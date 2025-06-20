@@ -68,3 +68,27 @@ Arvore CriaNoExt(ChaveTipo k, Arvore *p, int N_arquivo){
 
   return *p; // Retorna o ponteiro para o novo nó externo
 }
+
+
+/**
+ * @brief Pesquisa uma chave na árvore PATRICIA.
+ * 
+ * @param k Chave a ser pesquisada.
+ * @param t Ponteiro para o nó raiz da árvore ou subárvore.
+ * 
+ * @return Arvore Ponteiro para o nó encontrado com a chave ou NULL se não encontrado.
+ */
+Arvore Pesquisa(ChaveTipo k, Arvore *t){ 
+  if ((*t)->nt == Externo) {
+    if (strcmp(k,(*t)->NO.folha) == 0)
+      return (*t); ///< Nó folha com a chave encontrada.
+    else
+      return NULL; ///< Chave não encontrada.
+  }
+  // Se nó interno, decide ir para filho esquerdo ou direito baseado na comparação
+  if (k[(*t)->NO.NInterno.indice] < (*t)->NO.NInterno.caractere)
+    return Pesquisa(k, &(*t)->NO.NInterno.Esq);
+  else
+    return Pesquisa(k, &(*t)->NO.NInterno.Dir);
+}
+
