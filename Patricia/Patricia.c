@@ -92,3 +92,50 @@ Arvore Pesquisa(ChaveTipo k, Arvore *t){
     return Pesquisa(k, &(*t)->NO.NInterno.Dir);
 }
 
+
+/**
+ * @brief Insere uma chave entre dois nós na árvore, criando um nó interno novo.
+ * 
+ * @param k Chave a ser inserida.
+ * @param t Ponteiro para o nó atual.
+ * @param i Índice do caractere onde ocorre a primeira diferença entre as chaves.
+ * @param diferente Caractere de diferença para comparação no novo nó interno.
+ * @param N_arquivo Número do arquivo para atualizar ocorrência.
+ * 
+ * @return Arvore Ponteiro para o nó resultante da inserção.
+ */
+Arvore InsereEntre(char *k, Arvore *t, short i,char diferente,int N_arquivo){
+    Arvore p;
+    char c;
+    if (EExterno(*t)){
+      CriaNoExt(k,&p,N_arquivo);
+
+      // Decide se novo nó interno terá filho esquerdo ou direito
+      if(strcmp((*t)->NO.folha,k) < 0){
+        return (CriaNoInt(t,&p,i,diferente));
+
+      } else if(strcmp((*t)->NO.folha,k) > 0){
+        return (CriaNoInt(&p,t,i,diferente));
+      }
+      // Se as chaves são iguais, não insere nada
+      // printf("Erro: chave ja esta na arvore: %s == %s\n",k,(*t)->NO.folha);
+      return NULL;
+
+    } else if(i < (*t)->NO.NInterno.indice){
+      CriaNoExt(k,&p,N_arquivo);
+
+      if(k[i] < diferente){
+        return (CriaNoInt(&p,t,i,diferente));
+      } else{
+        return (CriaNoInt(t,&p,i,diferente));
+      }
+    } else {
+      
+      // Inserção recursiva nos filhos esquerdo ou direito do nó interno
+      if (k[(*t)->NO.NInterno.indice] < (*t)->NO.NInterno.caractere)
+        (*t)->NO.NInterno.Esq = InsereEntre(k,&(*t)->NO.NInterno.Esq,i,diferente,N_arquivo);
+      else
+        (*t)->NO.NInterno.Dir = InsereEntre(k,&(*t)->NO.NInterno.Dir,i,diferente,N_arquivo);
+      return (*t);
+    }
+}
