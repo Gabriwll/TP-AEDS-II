@@ -210,3 +210,44 @@ Arvore Insere(char *k, Arvore *t,int N_arquivo, int *qtd_pala)
     }
 }
 
+/**
+ * @brief Imprime as chaves (somente nós externos) da árvore e suas ocorrências.
+ * 
+ * @param t Ponteiro para o nó raiz da árvore ou subárvore.
+ */
+void imprime(Arvore t) {
+  if (t == NULL) {
+    return;
+  }
+
+  if (t->nt == Externo) {
+    printf("chave: %s\n-------------------------------------------\nocorrencia: ", t->NO.folha);
+    for (int i = 0; i < M; i++) {
+      if (t->V[i].repeticao != 0) {
+        printf("<%d,%d> ", t->V[i].repeticao, t->V[i].arquivo);
+      }
+    }
+    printf("\n-------------------------------------------\n");
+  }
+}
+
+/**
+ * @brief Percorre a árvore em ordem e imprime todas as chaves (folhas).
+ * 
+ * @param t Ponteiro para o nó raiz da árvore ou subárvore.
+ */
+void ordena(Arvore t) {
+  if (t == NULL) {
+    return;
+  }
+
+  if (t->nt == Interno) {
+    ordena(t->NO.NInterno.Esq); ///< Percorre filho esquerdo recursivamente.
+  }
+
+  imprime(t); ///< Imprime o nó atual (se for folha).
+
+  if (t->nt == Interno) {
+    ordena(t->NO.NInterno.Dir); ///< Percorre filho direito recursivamente.
+  }
+}
