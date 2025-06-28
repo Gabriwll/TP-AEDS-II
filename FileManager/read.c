@@ -1,14 +1,11 @@
-#include <stdio.h>
-#include <string.h>
-
 #include "read.h"
-#include "../InvertedIndex/invertedIndex.h"
-#include "../LinkedList/linkedlist.h"
 
-void readFile(int idDoc /* LinkedList list */){
+List* readFile(int idDoc /* LinkedList list */){
     FILE* file;
     List* list;
-    char fileName[25] = setFileName(idDoc);
+    char fileName[25];
+
+    strcpy(fileName, setFileName(fileName, idDoc));
     
     initializeList(&list);
 
@@ -22,6 +19,8 @@ void readFile(int idDoc /* LinkedList list */){
     }
 
     fclose(file);
+
+    return list;
 }
 
 void readWord(FILE* file, List* list, int idDoc){
@@ -56,12 +55,12 @@ int getdocQuant(){
     return docQuant;
 }
 
-char* setFileName(int idDoc){
-    char fileName[25];
+char* setFileName(char fileName[], int idDoc){
+    char idDocChar = idDoc + '0'; //Converte o idDoc para char
 
     strcpy(fileName, "../Files/In/arquivo");
 
-    strcat(fileName, idDoc);
+    strcat(fileName, &idDocChar);
     strcat(fileName, ".txt");
 
     return fileName;
@@ -71,6 +70,8 @@ char* setFileName(int idDoc){
 /*FIXME: remover esse ambiente de testes assim que o funcionamento total desse TAD seja comprovado
 * Uma alternativa seria manter esse ambiente em um branch secundário, a fim de uso na entrevista
 */
+/*
 int main(){
 
 }
+*/

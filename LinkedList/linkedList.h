@@ -1,11 +1,19 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "../InvertedIndex/invertedIndex.h"
+
+typedef struct Word Word;
+
 typedef Word Item;
 //typedef int Item;
 
 typedef struct Cell{
-    Item item;
+    Word item;
     struct Cell* next;
 }Cell;
 

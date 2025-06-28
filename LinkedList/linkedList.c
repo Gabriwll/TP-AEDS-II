@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "../InvertedIndex/invertedIndex.h"
 #include "linkedList.h"
 
 void initializeList(List** list){
@@ -88,26 +83,41 @@ void printList(List list){
 
     printf("Lista:\nTamanho: %d\n", list.sizeOfList);
     for(int i = 0; i < list.sizeOfList; i++){
-        printf("\tCelula %d: %d\n", (i+1), currentCell->item);
+        printf("\tCelula %d:\n", (i+1));
+        printf("\t\tPalavra: %s\n\n", currentCell->item.word);
+        printf("\t\tID do Documento: %d\n", currentCell->item.searchTerm.idDoc);
+        printf("\t\tQuantidade: %d\n\n\n", currentCell->item.searchTerm.qtde);
         currentCell = currentCell->next;
     }
 }
 
-/*Ambiente de testes destinado a esse TAD
-* FIXME: adaptar esse ambiente de testes para o tipo Word
-* Uma alternativa seria manter esse ambiente em um branch secundário, a fim de uso na entrevista
+//Ambiente de testes destinado a esse TAD
+// FIXME: adaptar esse ambiente de testes para o tipo Word
+// Uma alternativa seria manter esse ambiente em um branch secundário, a fim de uso na entrevista
 int main(){
     List* list;
-    Item item = 0;
-
+    Item item;
+    
+    item.searchTerm.idDoc = 1;
+    item.searchTerm.qtde = 1;
+    
     initializeList(&list);
-
+    
     for(int i = 0; i < 5; i++){
+        strcpy(item.word, "teste");
+        strcat(item.word, (char[]){'1' + i, '\0'});
+
         addCell(list, item);
-        item += 2;
+
+        printf("Adicionando celula %d:\n", (i + 1));
+        printf("\t\tPalavra: %s\n\n", item.word);
+        printf("\t\tID do Documento: %d\n", item.searchTerm.idDoc);
+        printf("\t\tQuantidade: %d\n\n\n", item.searchTerm.qtde);
+
+        item.searchTerm.qtde++;
     }
 
-    removeCell(list, 4);
+    //removeCell(list, item);
 
     printList(*list);
 
@@ -115,4 +125,3 @@ int main(){
 
     return 0;
 }
-*/
