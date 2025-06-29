@@ -1,0 +1,32 @@
+#ifndef MENU_H
+#define MENU_H
+
+#include <stdio.h>
+
+#include "../FileManager/read.h"
+#include "../Relevancia/Relevancia.h"
+
+// ANSI cores
+#define RED     "\033[1;31m"
+#define GREEN   "\033[1;32m"
+#define CYAN    "\033[1;36m"
+#define YELLOW  "\033[1;33m"
+#define WHITE   "\033[1;37m"
+#define BLUE    "\033[1;34m"
+#define RESET   "\033[0m"
+
+//TODO: terminar a implementação baseada nas estruturas
+int inicialMenu(/* ArvorePatricia* root, Hash* hashTable */);
+List* loadDocument(int idDoc);
+int processOption(int option /* ArvorePatricia* root, Hash* hastTable */);
+int IprocessOption(int option, List* list /* ArvorePatricia* root, Hash* hashTable */);
+
+#ifdef _WIN32
+#define clearTerminal() system("cls") // Para Windows
+
+#elif __linux__
+#define clearTerminal() system("clear") // Para Linux/Unix
+
+#endif
+
+#endif
