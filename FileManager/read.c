@@ -1,5 +1,8 @@
 #include "read.h"
 
+Arvore raiz = NULL; 
+int qtd_palavras = 0; // É incrementado toda vez que uma nova palavra diferente é inserida (não duplicada)
+
 List* readFile(int idDoc /* LinkedList list */){
     FILE* file;
     List* list;
@@ -15,7 +18,8 @@ List* readFile(int idDoc /* LinkedList list */){
     }
 
     while(!feof(file)){
-        readWord(file, list, idDoc);
+        readWord(file, list, &raiz, idDoc, &qtd_palavras);
+        // Além da lista encadeada, usei tmb a árvore PATRICIA para indexação invertida.
     }
 
     fclose(file);
@@ -23,13 +27,19 @@ List* readFile(int idDoc /* LinkedList list */){
     return list;
 }
 
-void readWord(FILE* file, List* list, int idDoc){
+void readWord(FILE* file, List* list, Arvore *raiz, int idDoc, int *qtd_pala){
     Cell buffer;
     Cell* foundCell;
 
     fscanf(file, "%s", buffer.item.word);
     cleanString(buffer.item.word);
 
+    // Patricia
+    if(strlen(buffer.item.word) == 0) return;
+    Insere(buffer.item.word, raiz, idDoc, qtd_pala);
+
+
+    // Lista encadeada
     foundCell = searchCellByWord(list, buffer.item);
     if(foundCell == NULL){ //Palavra não encontrada na lista, adiciona nova célula na lista e inicializa Parâmetros importantes
         foundCell = addCell(list, buffer.item);
@@ -96,6 +106,9 @@ int main(){
         printList(*list);
         freeList(list);
     }
+
+    printf("\n\n=IMPRIMINDO ARVORE PATRICIA=\n");
+    ordena(raiz);
 
     return 0;
 }
