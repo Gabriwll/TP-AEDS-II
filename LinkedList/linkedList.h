@@ -24,6 +24,7 @@ typedef struct List{
 }List;
 
 void initializeList(List** list);
+void initializeCell(Cell** cell);
 Cell* addCell(List* list, Item item);
 int removeCell(List* list, Item item);
 Cell* searchCellByWord(List* list, Item item);

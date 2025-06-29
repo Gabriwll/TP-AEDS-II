@@ -8,11 +8,17 @@ void initializeList(List** list){
     (*list)->end = NULL;
 }
 
-Cell* addCell(List* list, Item item){
-    Cell* newCell = (Cell*)malloc(sizeof(Cell));
-    newCell->item = item;
-    newCell->next = NULL;
+void initializeCell(Cell** cell){
+    *cell = (Cell*)malloc(sizeof(Cell));
+    (*cell)->next = NULL;
+}
 
+Cell* addCell(List* list, Item item){
+    Cell* newCell;
+    
+    initializeCell(&newCell);
+    newCell->item = item;
+    
     if(list->begin == NULL){
         list->begin = newCell;
         list->end = newCell;
@@ -56,8 +62,7 @@ Cell* searchCellByWord(List* list, Item item){
     Cell* currentCell = list->begin;
 
     while(currentCell != NULL){
-        if(currentCell->item.searchTerm.idDoc == item.searchTerm.idDoc &&
-           strcmp(currentCell->item.word, item.word) == 0) return currentCell;
+        if(!strcmp(currentCell->item.word, item.word)) return currentCell;
 
         currentCell = currentCell->next;
     }
@@ -94,6 +99,7 @@ void printList(List list){
 //Ambiente de testes destinado a esse TAD
 // FIXME: adaptar esse ambiente de testes para o tipo Word
 // Uma alternativa seria manter esse ambiente em um branch secundário, a fim de uso na entrevista
+/*
 int main(){
     List* list;
     Item item;
@@ -125,3 +131,4 @@ int main(){
 
     return 0;
 }
+*/
