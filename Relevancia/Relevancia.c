@@ -45,6 +45,7 @@ void inserir_qtd_pala_arq(qtd_pala_arq *qtd, int indice_arq, int qtd_pala) {
 /**
  * @brief Retorna o número de ocorrências de uma palavra em um documento (f_{j,i}).
  */
+
 int repeticao_pala_arq(Arvore t, char *palavra, int indice_arq) {
     Arvore i = Pesquisa(palavra, &t);
     if (i != NULL) {
@@ -80,8 +81,11 @@ double peso_W(Arvore t, char *palavra, int indice_arq) {
     int f = repeticao_pala_arq(t, palavra, indice_arq);
     int d = repeticao_pala_total(t, palavra);
     double W = 0;
+    
+
     if (f != 0 && d != 0)
         W = f * (log2((double)TAM / d));  ///< log base 2 conforme enunciado
+    printf("DEBUG: %s no doc %d -> f=%d, d=%d, W=%.3f\n", palavra, indice_arq, f, d, W);    
     return W;
 }
 

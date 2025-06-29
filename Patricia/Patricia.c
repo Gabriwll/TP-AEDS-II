@@ -77,7 +77,9 @@ Arvore CriaNoExt(ChaveTipo k, Arvore *p, int N_arquivo){
  * 
  * @return Arvore Ponteiro para o nó encontrado com a chave ou NULL se não encontrado.
  */
-Arvore Pesquisa(ChaveTipo k, Arvore *t){ 
+Arvore Pesquisa(ChaveTipo k, Arvore *t) {
+    if (t == NULL || *t == NULL) return NULL; 
+ // Verifica se a árvore está vazia ou se o nó é nulo
   if ((*t)->nt == Externo) {
     if (strcmp(k,(*t)->NO.folha) == 0)
       return (*t); ///< Nó folha com a chave encontrada.

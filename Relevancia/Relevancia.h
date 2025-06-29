@@ -1,7 +1,7 @@
 #ifndef RELEVANCIA_H
 #define RELEVANCIA_H
 
-#include "PATRICIA.h"
+#include "../Patricia/Patricia.h"
 
 #define TAM 5 //quantidade de arquivos
 
