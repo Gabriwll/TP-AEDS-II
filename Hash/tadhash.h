@@ -2,6 +2,7 @@
 #define TADHASH_H
 
 #include "../InvertedIndex/invertedIndex.h" 
+#include "../LinkedList/linkedList.h"
 
 #define M 7
 #define N 7
@@ -18,7 +19,7 @@ typedef unsigned int TipoIndice;
 typedef struct TipoCelula *TipoApontador;
 
 typedef struct TipoCelula {
-    TipoItem Item;
+    Word word;
     TipoApontador Prox;
 } TipoCelula;
 
