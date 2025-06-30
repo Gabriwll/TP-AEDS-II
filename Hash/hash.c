@@ -1,114 +1,128 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <string.h>
 #include "tadhash.h"
 
+void FLVazia(TipoLista *Lista) {
+    Lista->Primeiro = (TipoCelula *)malloc(sizeof(TipoCelula));
+    Lista->Ultimo = Lista->Primeiro;
+    Lista->Primeiro->Prox = NULL;
+}
 
-#define MAX_WORD 100
+short Vazia(TipoLista Lista) {
+    return (Lista.Primeiro == Lista.Ultimo);
+}
 
-// Hash function (djb2)
-unsigned int hashFunction(char* word) {
-    unsigned long hash = 5381;
-    int c;
-    while ((c = *word++)) {
-        hash = ((hash << 5) + hash) + c;
+void Ins(TipoItem x, TipoLista *Lista) {
+    Lista->Ultimo->Prox = (TipoCelula *)malloc(sizeof(TipoCelula));
+    Lista->Ultimo = Lista->Ultimo->Prox;
+    Lista->Ultimo->Item = x;
+    Lista->Ultimo->Prox = NULL;
+}
+
+void Ret(TipoApontador p, TipoLista *Lista, TipoItem *Item) {
+    TipoApontador q;
+    if (Vazia(*Lista) || p == NULL || p->Prox == NULL) {
+        printf(" Erro Lista vazia ou posicao nao existe\n");
+        return;
     }
-    return hash % HASH_SIZE;
+    q = p->Prox;
+    *Item = q->Item;
+    p->Prox = q->Prox;
+    if (p->Prox == NULL)
+        Lista->Ultimo = p;
+    free(q);
 }
 
-// Inicializa a hash table
-void initHashTable(HashTable* ht) {
-    for (int i = 0; i < HASH_SIZE; i++) {
-        ht->table[i] = NULL;
-    }
+void GeraPesos(TipoPesos p) {
+    int i, j;
+    struct timeval semente;
+    gettimeofday(&semente, NULL);
+    srand((int)(semente.tv_sec + 1000000 * semente.tv_usec));
+    for (i = 0; i < N; i++)
+        for (j = 0; j < TAMALFABETO; j++)
+            p[i][j] = 1 + (int)(10000.0 * rand() / (RAND_MAX + 1.0));
 }
 
-WordEntry* createWordEntry(char* word, int idDoc) {
-    WordEntry* entry = (WordEntry*) malloc(sizeof(WordEntry));
-    entry->word = strdup(word);
-    initializeList(&entry->occurrences);
-
-    Word w;
-    strcpy(w.word, word);
-    w.searchTerm.idDoc = idDoc;
-    w.searchTerm.qtde = 1;
-
-    addCell(entry->occurrences, w);
-    entry->next = NULL;
-    return entry;
+TipoIndice h(TipoChave Chave, TipoPesos p) {
+    int i;
+    unsigned int Soma = 0;
+    int comp = strlen(Chave);
+    for (i = 0; i < comp; i++)
+        Soma += p[i][(unsigned int)Chave[i]];
+    return (Soma % M);
 }
 
-void updateOccurrenceList(List* list, char* word, int idDoc) {
-    Word w;
-    strcpy(w.word, word);
-    w.searchTerm.idDoc = idDoc;
-
-    Cell* found = searchCellByWord(list, w);
-    if (found != NULL) {
-        found->item.searchTerm.qtde++;
-    } else {
-        w.searchTerm.qtde = 1;
-        addCell(list, w);
-    }
+void Inicializa(TipoDicionario T) {
+    int i;
+    for (i = 0; i < M; i++)
+        FLVazia(&T[i]);
 }
 
-void insertOccurrence(HashTable* ht, char* word, int idDoc) {
-    unsigned int index = hashFunction(word);
-    WordEntry* current = ht->table[index];
-
-    while (current) {
-        if (strcmp(current->word, word) == 0) {
-            updateOccurrenceList(current->occurrences, word, idDoc);
-            return;
-        }
-        current = current->next;
-    }
-
-    WordEntry* newEntry = createWordEntry(word, idDoc);
-    newEntry->next = ht->table[index];
-    ht->table[index] = newEntry;
-}
-
-WordEntry* searchWord(HashTable* ht, char* word) {
-    unsigned int index = hashFunction(word);
-    WordEntry* current = ht->table[index];
-    while (current) {
-        if (strcmp(current->word, word) == 0)
-            return current;
-        current = current->next;
-    }
-    return NULL;
-}
-
-void freeHashTable(HashTable* ht) {
-    for (int i = 0; i < HASH_SIZE; i++) {
-        WordEntry* current = ht->table[i];
-        while (current) {
-            WordEntry* temp = current;
-            current = current->next;
-            freeList(temp->occurrences);
-            free(temp->word);
-            free(temp);
-        }
+TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T) {
+    TipoIndice i;
+    TipoApontador Ap;
+    i = h(Ch, p);
+    if (Vazia(T[i]))
+        return NULL;
+    else {
+        Ap = T[i].Primeiro;
+        while (Ap->Prox->Prox != NULL &&
+               strncmp(Ch, Ap->Prox->Item.palavra.word, sizeof(TipoChave)))
+            Ap = Ap->Prox;
+        if (!strncmp(Ch, Ap->Prox->Item.palavra.word, sizeof(TipoChave)))
+            return Ap;
+        else
+            return NULL;
     }
 }
 
-void printOccurrences(List* list) {
-    Cell* current = list->begin;
-    while (current) {
-        printf("<%d, %d> ", current->item.searchTerm.qtde, current->item.searchTerm.idDoc);
-        current = current->next;
+void Insere(TipoItem x, TipoPesos p, TipoDicionario T) {
+    if (Pesquisa(x.palavra.word, p, T) == NULL)
+        Ins(x, &T[h(x.palavra.word, p)]);
+    else
+        printf(" Registro ja esta presente\n");
+}
+
+void Retira(TipoItem x, TipoPesos p, TipoDicionario T) {
+    TipoApontador Ap;
+    Ap = Pesquisa(x.palavra.word, p, T);
+    if (Ap == NULL)
+        printf(" Registro nao esta presente\n");
+    else
+        Ret(Ap, &T[h(x.palavra.word, p)], &x);
+}
+
+void Imp(TipoLista Lista) {
+    TipoApontador Aux;
+    Aux = Lista.Primeiro->Prox;
+    while (Aux != NULL) {
+        printf("%.*s ", N, Aux->Item.palavra.word);
+        Aux = Aux->Prox;
     }
 }
 
-void printHashTable(HashTable* ht) {
-    for (int i = 0; i < HASH_SIZE; i++) {
-        WordEntry* current = ht->table[i];
-        while (current) {
-            printf("%s: ", current->word);
-            printOccurrences(current->occurrences);
-            printf("\n");
-            current = current->next;
-        }
+void Imprime(TipoDicionario Tabela) {
+    int i;
+    for (i = 0; i < M; i++) {
+        printf("%d: ", i);
+        if (!Vazia(Tabela[i]))
+            Imp(Tabela[i]);
+        putchar('\n');
     }
+}
+
+void LerPalavra(char *p, int Tam) {
+    char c;
+    int i, j;
+    fflush(stdin);
+    j = 0;
+    while (((c = getchar()) != '\n') && j < Tam - 1)
+        p[j++] = c;
+    p[j] = '\0';
+    while (c != '\n')
+        c = getchar();
+    for (i = j - 1; (i >= 0 && p[i] == ' '); i--)
+        p[i] = '\0';
 }
