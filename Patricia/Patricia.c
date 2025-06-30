@@ -42,19 +42,14 @@ Arvore CriaNoInt(Arvore *Esq, Arvore *Dir, int i, char c) {
  * 
  * @param k Chave a ser armazenada no nó
  * @param p Ponteiro para o nó a ser criado
- * @param N_arquivo Número do arquivo onde a chave foi encontrada
+ * @param idDoc Número do arquivo onde a chave foi encontrada
  * @return Arvore Retorna o novo nó externo criado
  */
-Arvore CriaNoExt(ChaveTipo k, Arvore *p, int N_arquivo) {
-    int i;
+Arvore CriaNoExt(ChaveTipo k, Arvore *p, int idDoc) {
     *p = (Arvore)malloc(sizeof(PatNo));
     (*p)->nt = Externo;
-    strcpy((*p)->NO.folha, k);
-    for(i = 0; i < M; i++) {
-        (*p)->V[i].arquivo = i+1;
-        (*p)->V[i].repeticao = 0;
-    }
-    (*p)->V[N_arquivo-1].repeticao = 1;
+    inicializaWord(&(*p)->NO.termo, (char*)k);
+    incrementaOcorrencia(&(*p)->NO.termo, idDoc);
     return *p;
 }  
 
@@ -67,7 +62,7 @@ Arvore CriaNoExt(ChaveTipo k, Arvore *p, int N_arquivo) {
  */
 Arvore Pesquisa(ChaveTipo k, Arvore *t) {
     if ((*t)->nt == Externo) {
-        if (strcmp(k, (*t)->NO.folha) == 0)
+        if (strcmp((char *)k, (*t)->NO.termo.word) == 0)
             return (*t);
         else
             return NULL;
@@ -88,12 +83,12 @@ Arvore Pesquisa(ChaveTipo k, Arvore *t) {
  * @param N_arquivo Número do arquivo onde a chave foi encontrada
  * @return Arvore Retorna a nova árvore com o nó inserido
  */
-Arvore InsereEntre(char *k, Arvore *t, short i, char diferente, int N_arquivo) {
+Arvore InsereEntre(char *k, Arvore *t, short i, char diferente, int idDoc) {
     Arvore p;
-    char c;
+    CriaNoExt((ChaveTipo)k, &p, idDoc);
+
     if (EExterno(*t)) {
-        CriaNoExt(k, &p, N_arquivo);
-        if(strcmp((*t)->NO.folha, k) < 0) {
+        if(strcmp((*t)->NO.termo.word, k) < 0) {
             return (CriaNoInt(t, &p, i, diferente));
         } else if(strcmp((*t)->NO.folha, k) > 0) {
             return(CriaNoInt(&p, t, i, diferente));
@@ -130,7 +125,7 @@ Arvore Insere(char *k, Arvore *t, int N_arquivo, int *qtd_pala) {
     char caux, cdif;
 
     if ((*t) == NULL) {
-        return (CriaNoExt(k, t, N_arquivo));
+        return (CriaNoExt(k, t, idDoc));
     } else {
         p = (*t);
         while (!EExterno(p)) {
@@ -143,29 +138,19 @@ Arvore Insere(char *k, Arvore *t, int N_arquivo, int *qtd_pala) {
                 p = p->NO.NInterno.Esq;
         }
         
-        i = 0;
-        if(strcmp(p->NO.folha, k) == 0) {
-            for(j = 0; j < M; j++) {
-                if(j == (N_arquivo - 1)) {
-                    p->V[j].repeticao++;
-                }
-            }
+        if(strcmp(p->NO.termo.word, k) == 0) {
+            incrementaOcorrencia(&p->NO.termo, idDoc);
             return (*t);
         } else {
-            int tam = (strlen(k) < strlen(p->NO.folha)) ? strlen(k) : strlen(p->NO.folha);
+            int tam = (strlen(k) < strlen(p->NO.termo.word)) ? strlen(k) : strlen(p->NO.termo.word);
             for(i = 0; i <= tam; i++) {
-                if(k[i] != p->NO.folha[i]) {
-                    if(k[i] < p->NO.folha[i]) {
-                        cdif = p->NO.folha[i];
-                        break;
-                    } else {
-                        cdif = k[i];
-                        break;
-                    }
+                if(k[i] != p->NO.termo.word[i]) {
+                    cdif = (k[i] < p->NO.termo.word[i]) ? p->NO.termo.word[i] : k[i];
+                    break;
                 }
             }
             (*qtd_pala)++;
-            return (InsereEntre(k, t, i, cdif, N_arquivo));
+            return InsereEntre(k, t, i, cdif, idDoc);
         }
     }
 }
@@ -176,18 +161,9 @@ Arvore Insere(char *k, Arvore *t, int N_arquivo, int *qtd_pala) {
  * @param t Ponteiro para o nó a ser impresso
  */
 void imprime(Arvore t) {
-    if (t == NULL) {
-        return;
-    }
-
+    if (t == NULL) return;
     if (t->nt == Externo) {
-        printf("chave: %s\n-------------------------------------------\nocorrencia: ", t->NO.folha);
-        for (int i = 0; i < M; i++) {
-            if (t->V[i].repeticao != 0) {
-                printf("<%d,%d> ", t->V[i].repeticao, t->V[i].arquivo);
-            }
-        }
-        printf("\n-------------------------------------------\n");
+        imprimeWord(&t->NO.termo);
     }
 }
 

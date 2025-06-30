@@ -9,6 +9,7 @@
 #include <stdlib.h> 
 #include <stdio.h>
 #include <sys/time.h>
+#include "InvertedIndexPat.h"
 
 /**
  * @def M
@@ -16,11 +17,6 @@
  */
 #define M 5
 
-/**
- * @typedef boolean
- * @brief Tipo booleano (short int)
- */
-typedef short boolean;
 
 /**
  * @typedef ChaveTipo 
@@ -28,17 +24,6 @@ typedef short boolean;
  */
 typedef unsigned char *ChaveTipo;
 
-/**
- * @typedef IndexAmp
- * @brief Tipo para índice ampliado (unsigned char)
- */
-typedef unsigned char IndexAmp;
-
-/**
- * @typedef Dib
- * @brief Tipo para dígito binário (unsigned char)
- */
-typedef unsigned char Dib;
 
 /**
  * @enum TipoNo
@@ -48,15 +33,6 @@ typedef enum {
   Interno,  ///< Nó interno (de decisão)
   Externo   ///< Nó externo (folha)
 } TipoNo;
-
-/**
- * @struct id
- * @brief Estrutura para armazenar informações de documentos
- */
-typedef struct id {
-  int repeticao; ///< Número de ocorrências da palavra no documento
-  int arquivo;   ///< Identificador do documento
-} id;
 
 /**
  * @typedef Arvore
@@ -79,29 +55,11 @@ typedef struct PatNo {
       Arvore Dir;     ///< Subárvore direita
     } NInterno;       ///< Estrutura para nó interno
     
-    char folha[50];    ///< Chave armazenada em nó externo
+     Word termo;       ///< Palavra e índice invertido
   } NO;                ///< União dos tipos de nó
-
-  id V[M];             ///< Vetor de informações por documento
 } PatNo;
 
 /* Protótipos de funções */
-
-/**
- * @brief Obtém o caractere em uma posição específica da chave
- * @param i Posição do caractere
- * @param k Ponteiro para a chave
- * @return Caractere na posição i
- */
-char Caractere(short i, char* k);
-
-/**
- * @brief Compara dois caracteres
- * @param a Primeiro caractere
- * @param b Segundo caractere
- * @return Verdadeiro se a <= b, falso caso contrário
- */
-boolean MenorIgual(char a, char b);
 
 /**
  * @brief Cria um novo nó externo (folha)
@@ -110,7 +68,7 @@ boolean MenorIgual(char a, char b);
  * @param N_arquivo Número do arquivo associado
  * @return Ponteiro para o nó criado
  */
-Arvore CriaNoExt(ChaveTipo k, Arvore *p, int N_arquivo);
+Arvore CriaNoExt(ChaveTipo k, Arvore *p, int idDoc);
 
 /**
  * @brief Cria um novo nó interno
@@ -139,7 +97,7 @@ Arvore Pesquisa(ChaveTipo k, Arvore *t);
  * @param N_arquivo Número do arquivo associado
  * @return Ponteiro para a árvore atualizada
  */
-Arvore InsereEntre(char *k, Arvore *t, short i, char diferente, int N_arquivo);
+Arvore InsereEntre(char *k, Arvore *t, short i, char diferente, int idDoc);
 
 /**
  * @brief Insere uma nova chave na árvore
@@ -149,7 +107,7 @@ Arvore InsereEntre(char *k, Arvore *t, short i, char diferente, int N_arquivo);
  * @param qtd_pala Ponteiro para contador de palavras (atualizado se nova palavra)
  * @return Ponteiro para a árvore atualizada
  */
-Arvore Insere(char *k, Arvore *t, int N_arquivo, int *qtd_pala);
+Arvore Insere(char *k, Arvore *t, int idDoc, int *qtd_pala);
 
 /**
  * @brief Imprime as informações de um nó folha
