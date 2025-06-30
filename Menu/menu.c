@@ -1,14 +1,27 @@
-#include "menu.h"
+#include "menu.h" 
 
 int inicialMenu(/* ArvorePatricia* root, Hash* hashTable */){
     int option;
 
+    printf(CYAN "============================================\n" RESET);
+    printf(WHITE  "     TRABALHO PRATICO DE AEDS 2    \n" RESET);
+    printf(CYAN "============================================\n\n" RESET);
+    
     printf("Menu de Opções:\n\n");
     printf("Como deseja processar os documentos?\n");
     printf("\t1. Processar usando Patricia.\n");
     printf("\t2. Processar usando Hash.\n");
     printf("\t3. Sair.\n");
-
+/* SUGESTÃO DE MENU
+    printf("Menu de Opções:\n\n");
+    printf(CYAN "Como deseja processar os documentos?\n"  RESET);
+    printf("\t1. Processar os arquivos.\n");
+    printf("\t2. Construir os indices invertidos.\n");
+    printf("\t3. Imprimir tabela Hash.\n");
+    printf("\t4. Imprimir árvore Patricia.\n");
+    printf("\t5. Buscar por palavra ou termo (Hash e Patricia).\n");
+    printf("\t6. Sair\n");
+*/
     scanf("%d", &option);
     processOption(option);
 
