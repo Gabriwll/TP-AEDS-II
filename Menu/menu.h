@@ -5,6 +5,8 @@
 
 #include "../FileManager/read.h"
 #include "../Relevancia/Relevancia.h"
+#include "../Patricia/Patricia.h"
+#include "../Hash/tadhash.h"
 
 // ANSI cores
 #define RED     "\033[1;31m"
