@@ -24,10 +24,10 @@ int main() {
 
     while (op != 0) {
         scanf("%d", &op);
-        system("clear");
+        system("cls");
         switch (op) {
             case 1:
-                entradaTXT = fopen("../Files/In/entrada.txt", "r");
+                entradaTXT = fopen("Files/In/entrada.txt", "r");
                 if (entradaTXT == NULL) {
                     printf("Erro ao abrir entrada.txt\n");
                     exit(1);
@@ -36,8 +36,12 @@ int main() {
                 fscanf(entradaTXT, "%d", &N_arquivo);
                 fclose(entradaTXT);
 
-                for (int idDoc = 1; idDoc <= N_arquivo; idDoc++) {
-                    sprintf(arq, "../Files/In/arquivo%d.txt", idDoc);
+                iniciar_qtd_pala_arq(&qtd); // inicializa qtd_pala_arq
+                iniciar_W(&p_w); // inicializa pesos
+                memset(&relev, 0, sizeof(relev));  // limpa relevância
+
+                for (int idDoc = 0; idDoc < N_arquivo && idDoc < TAM; idDoc++) {
+                    sprintf(arq, "Files/In/arquivo%d.txt", idDoc + 1);
                     TXTartigo = fopen(arq, "r");
 
                     if (TXTartigo == NULL) {
@@ -70,7 +74,7 @@ int main() {
                            "0 = Encerrar\n\n");
                     printf("Digite sua opcao: ");
                     scanf("%d", &op);
-                    system("clear");
+                    system("cls");
                     switch (op) {
                         case 2:
                             printf("Imprimindo:\n");
@@ -79,13 +83,13 @@ int main() {
                         case 3:
                             iniciar_W(&p_w);
                             char texto[100];
-                            printf("\nFaça uma pesquisa: \n");
+                            printf("\nFaca uma pesquisa: \n");
                             limparBuffer();
                             fgets(texto, sizeof(texto), stdin);
+                            texto[strcspn(texto, "\n")] = '\0';
+
                             const char delimitador[] = " ";
                             char *token;
-
-                            texto[strcspn(texto, "\n")] = '\0';
 
                             token = strtok(texto, delimitador);
 

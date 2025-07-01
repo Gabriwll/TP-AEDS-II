@@ -108,7 +108,7 @@ double peso_W(Arvore t, char *palavra, int indice_arq) {
     int d = repeticao_pala_total(t, palavra);
     double W = 0;
     if(f != 0 && d != 0)
-        W = f * (log2(MAX_DOCS)/d);
+        W = f * log2((double)MAX_DOCS / d);
     printf("W = %f\n", W);
     return W;
 }
