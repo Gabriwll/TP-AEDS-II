@@ -2,8 +2,7 @@
 #include "Patricia.h"                        
 #include "../Relevancia/Relevancia.h"       
 #include "../InvertedIndex/InvertedIndexPat.h"
-#include "trata_arquivo.c"
-
+#include "../Patricia/trata_arquivo.h"
 
 #define comp 0.000001
 

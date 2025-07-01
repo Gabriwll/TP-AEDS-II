@@ -9,7 +9,7 @@
 #include <stdlib.h> 
 #include <stdio.h>
 #include <sys/time.h>
-#include "../InvertedIndex/invertedIndex.h" 
+#include "../InvertedIndex/InvertedIndexPat.h"
 
 #define M 100
 
@@ -35,7 +35,7 @@ typedef struct PatNo {
       Arvore Dir;     ///< Subárvore direita
     } NInterno;       ///< Estrutura para nó interno
     
-     Word termo;       ///< Palavra e índice invertido
+     PatWord termo;       ///< Palavra e índice invertido
   } NO;                ///< União dos tipos de nó
 } PatNo;
 

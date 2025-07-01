@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../Patricia/Patricia.h"
+#include "../InvertedIndex/InvertedIndexPat.h"
 
 /**
  * @brief Verifica se um nó é externo (folha)

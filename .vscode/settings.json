@@ -2,6 +2,8 @@
     "C_Cpp.errorSquiggles": "enabled",
     "files.associations": {
         "patricia.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "trata_arquivo.h": "c",
+        "string.h": "c"
     }
 }
