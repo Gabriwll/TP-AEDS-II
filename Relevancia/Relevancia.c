@@ -1,17 +1,9 @@
-/**
- * @file relevancia.c
- * @brief Implementação das funções para cálculo de relevância de palavras
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
 #include "../Relevancia/Relevancia.h"
 
-/**
- * @brief Limpa o buffer de entrada do teclado
- */
 void limparBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) {}
@@ -57,7 +49,7 @@ void inserir_qtd_pala_arq(qtd_pala_arq *qtd, int indice_arq, int qtd_pala) {
 }
 
 /**
- * @brief Obtém a frequência de uma palavra em um arquivo específico
+//  * @brief Obtém a frequência de uma palavra em um arquivo específico
  * @param t Ponteiro para a árvore Patricia
  * @param palavra Palavra a ser pesquisada
  * @param indice_arq Índice do arquivo (1 a TAM)
@@ -68,14 +60,14 @@ int repeticao_pala_arq(Arvore t, char *palavra, int indice_arq) {
     int j;
     i = Pesquisa(palavra, &t);
     if(i != NULL) {
-        for(j = 0; j < M; j++) {
-            if(i->V[j].arquivo == indice_arq) {
-                printf("repeticao_pala_arq = %d\n", i->V[j].repeticao);
-                return i->V[j].repeticao;
+        for(j = 0; j < MAX_DOCS; j++) {
+                if(i->NO.termo.searchTerm[j].idDoc == indice_arq) {
+                printf("repeticao_pala_arq = %d\n", i->NO.termo.searchTerm[j].qtde);
+                return t->NO.termo.searchTerm[j].qtde;
             }
         }
     }
-    printf("repeticao_pala_arq = 0\n");
+    //printf("repeticao_pala_arq = 0\n");
     return 0;
 }
 
@@ -91,11 +83,11 @@ int repeticao_pala_total(Arvore t, char *palavra) {
     i = Pesquisa(palavra, &t);
     if(i != NULL) {
         for(j = 0; j < TAM; j++) {
-            if(i->V[j].arquivo != 0)
+            if(i->NO.termo.searchTerm[j].idDoc != 0)
                 cont++;
         }
     }
-    printf("quant_de_arq_tem_pala = %d\n", cont);
+    //printf("quant_de_arq_tem_pala = %d\n", cont);
     return cont;
 }
 
@@ -103,7 +95,7 @@ int repeticao_pala_total(Arvore t, char *palavra) {
  * @brief Calcula o peso (Wij) de uma palavra em um arquivo
  * @param t Ponteiro para a árvore Patricia
  * @param palavra Palavra a ser processada
- * @param indice_arq Índice do arquivo (1 a TAM)
+ * @param indice_arq Índice do arquivo (1 a MAX_DOCS)
  * @return Valor do peso calculado
  */
 double peso_W(Arvore t, char *palavra, int indice_arq) {
@@ -112,7 +104,7 @@ double peso_W(Arvore t, char *palavra, int indice_arq) {
     int d = repeticao_pala_total(t, palavra);
     double W = 0;
     if(f != 0 && d != 0)
-        W = f * (log2(TAM)/d);
+        W = f * (log2(MAX_DOCS)/d);
     printf("W = %f\n", W);
     return W;
 }

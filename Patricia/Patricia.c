@@ -90,12 +90,12 @@ Arvore InsereEntre(char *k, Arvore *t, short i, char diferente, int idDoc) {
     if (EExterno(*t)) {
         if(strcmp((*t)->NO.termo.word, k) < 0) {
             return (CriaNoInt(t, &p, i, diferente));
-        } else if(strcmp((*t)->NO.folha, k) > 0) {
+        } else if(strcmp((*t)->NO.termo.word, k) > 0) {
             return(CriaNoInt(&p, t, i, diferente));
         }
         return NULL;
     } else if(i < (*t)->NO.NInterno.indice) {
-        CriaNoExt(k, &p, N_arquivo);
+        CriaNoExt(k, &p, idDoc);
         if(k[i] < diferente) {
             return (CriaNoInt(&p, t, i, diferente));
         } else {
@@ -103,9 +103,9 @@ Arvore InsereEntre(char *k, Arvore *t, short i, char diferente, int idDoc) {
         }
     } else {
         if (k[(*t)->NO.NInterno.indice] < (*t)->NO.NInterno.caractere)
-            (*t)->NO.NInterno.Esq = InsereEntre(k, &(*t)->NO.NInterno.Esq, i, diferente, N_arquivo);
+            (*t)->NO.NInterno.Esq = InsereEntre(k, &(*t)->NO.NInterno.Esq, i, diferente, idDoc);
         else
-            (*t)->NO.NInterno.Dir = InsereEntre(k, &(*t)->NO.NInterno.Dir, i, diferente, N_arquivo);
+            (*t)->NO.NInterno.Dir = InsereEntre(k, &(*t)->NO.NInterno.Dir, i, diferente, idDoc);
         return (*t);
     }
 }
@@ -115,11 +115,11 @@ Arvore InsereEntre(char *k, Arvore *t, short i, char diferente, int idDoc) {
  * 
  * @param k Chave a ser inserida
  * @param t Ponteiro para a raiz da árvore
- * @param N_arquivo Número do arquivo onde a chave foi encontrada
+ * @param idDoc Número do arquivo onde a chave foi encontrada
  * @param qtd_pala Ponteiro para contador de palavras (será incrementado se nova palavra for inserida)
  * @return Arvore Retorna a árvore atualizada
  */
-Arvore Insere(char *k, Arvore *t, int N_arquivo, int *qtd_pala) {
+Arvore Insere(char *k, Arvore *t, int idDoc, int *qtd_pala) {
     Arvore p;
     int i, j;
     char caux, cdif;
