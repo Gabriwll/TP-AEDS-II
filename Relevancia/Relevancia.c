@@ -3,6 +3,7 @@
 #include <math.h>
 #include <string.h>
 #include "../Relevancia/Relevancia.h"
+#include "../InvertedIndex/invertedIndexPat.h"
 
 void limparBuffer() {
     int c;
@@ -56,18 +57,21 @@ void inserir_qtd_pala_arq(qtd_pala_arq *qtd, int indice_arq, int qtd_pala) {
  * @return Número de ocorrências da palavra no arquivo
  */
 int repeticao_pala_arq(Arvore t, char *palavra, int indice_arq) {
-    Arvore i;
-    int j;
-    i = Pesquisa(palavra, &t);
-    if(i != NULL) {
-        for(j = 0; j < MAX_DOCS; j++) {
-                if(i->NO.termo.searchTerm[j].idDoc == indice_arq) {
-                printf("repeticao_pala_arq = %d\n", i->NO.termo.searchTerm[j].qtde);
-                return t->NO.termo.searchTerm[j].qtde;
-            }
+    // Verificação de segurança
+    if (t == NULL || palavra == NULL || indice_arq < 1 || indice_arq > MAX_DOCS) {
+        return 0;
+    }
+    // Pesquisa a palavra na árvore
+    Arvore noEncontrado = Pesquisa(palavra, &t);
+    
+    if (noEncontrado != NULL) {
+        // Acessa o termo
+        PatWord *termo = &(noEncontrado->NO.termo);
+        // Verifica o documento específico
+        if (termo->searchTerm[indice_arq - 1].idDoc == indice_arq) {
+            return termo->searchTerm[indice_arq - 1].qtde;
         }
     }
-    //printf("repeticao_pala_arq = 0\n");
     return 0;
 }
 
@@ -78,16 +82,16 @@ int repeticao_pala_arq(Arvore t, char *palavra, int indice_arq) {
  * @return Número de arquivos que contêm a palavra
  */
 int repeticao_pala_total(Arvore t, char *palavra) {
-    Arvore i;
-    int cont = 0, j;
-    i = Pesquisa(palavra, &t);
-    if(i != NULL) {
-        for(j = 0; j < TAM; j++) {
-            if(i->NO.termo.searchTerm[j].idDoc != 0)
-                cont++;
+    if (t == NULL || palavra == NULL) return 0;
+    Arvore noEncontrado = Pesquisa(palavra, &t);
+    if (noEncontrado == NULL) return 0;
+    int cont = 0;
+    PatWord *termo = &(noEncontrado->NO.termo);
+    for (int j = 0; j < MAX_DOCS; j++) {
+        if (termo->searchTerm[j].qtde > 0) {
+            cont++;
         }
     }
-    //printf("quant_de_arq_tem_pala = %d\n", cont);
     return cont;
 }
 

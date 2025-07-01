@@ -8,7 +8,8 @@
 
 #include "../Patricia/Patricia.h"
 
-#define TAM 100
+#define MAX_DOCS 5  
+#define TAM MAX_DOCS  
 
 /**
  * @struct relevancia
