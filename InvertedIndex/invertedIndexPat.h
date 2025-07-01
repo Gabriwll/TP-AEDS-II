@@ -21,3 +21,4 @@ void incrementaOcorrencia(PatWord *w, int idDoc);
 void imprimeWord(const PatWord *w);
 
 #endif
+

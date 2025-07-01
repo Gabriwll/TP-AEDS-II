@@ -89,7 +89,7 @@ TipoApontador PesquisaHash(TipoChave Ch, TipoPesos p, TipoDicionario T, int idDo
     TipoApontador Ap;
 
     if (Vazia(T[i])){
-        printf("Tabela de hash vazia\n");
+        //printf("Tabela de hash vazia\n");
         return NULL;
     }
 
