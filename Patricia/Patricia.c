@@ -53,6 +53,9 @@ Arvore CriaNoExt(ChaveTipo k, Arvore *p, int idDoc) {
     return *p;
 }  
 
+
+int comparacoes_patricia = 0;  // Contador global de comparações para análise de desempenho
+
 /**
  * @brief Pesquisa uma chave na árvore Patricia
  * 
@@ -61,12 +64,17 @@ Arvore CriaNoExt(ChaveTipo k, Arvore *p, int idDoc) {
  * @return Arvore Retorna o nó encontrado ou NULL se não existir
  */
 Arvore Pesquisa(ChaveTipo k, Arvore *t) {
+    if (t == NULL) {
+        return NULL;
+    }
     if ((*t)->nt == Externo) {
+        comparacoes_patricia++; // comparação final da chave
         if (strcmp((char *)k, (*t)->NO.termo.word) == 0)
             return (*t);
         else
             return NULL;
     }
+    comparacoes_patricia++;  // comparação de índice na árvore
     if (k[(*t)->NO.NInterno.indice] < (*t)->NO.NInterno.caractere)
         Pesquisa(k, &(*t)->NO.NInterno.Esq);
     else
@@ -88,6 +96,7 @@ Arvore InsereEntre(char *k, Arvore *t, short i, char diferente, int idDoc) {
     CriaNoExt((ChaveTipo)k, &p, idDoc);
 
     if (EExterno(*t)) {
+        comparacoes_patricia++; // comparação de igualdade de chaves
         if(strcmp((*t)->NO.termo.word, k) < 0) {
             return (CriaNoInt(t, &p, i, diferente));
         } else if(strcmp((*t)->NO.termo.word, k) > 0) {
@@ -95,13 +104,16 @@ Arvore InsereEntre(char *k, Arvore *t, short i, char diferente, int idDoc) {
         }
         return NULL;
     } else if(i < (*t)->NO.NInterno.indice) {
+        comparacoes_patricia++; // comparação de índice na árvore
         CriaNoExt(k, &p, idDoc);
+        comparacoes_patricia++; // comparação de caractere na árvore
         if(k[i] < diferente) {
             return (CriaNoInt(&p, t, i, diferente));
         } else {
             return(CriaNoInt(t, &p, i, diferente));
         }
     } else {
+        comparacoes_patricia++; // comparação de índice na árvore
         if (k[(*t)->NO.NInterno.indice] < (*t)->NO.NInterno.caractere)
             (*t)->NO.NInterno.Esq = InsereEntre(k, &(*t)->NO.NInterno.Esq, i, diferente, idDoc);
         else
@@ -129,6 +141,7 @@ Arvore Insere(char *k, Arvore *t, int idDoc, int *qtd_pala) {
     } else {
         p = (*t);
         while (!EExterno(p)) {
+            comparacoes_patricia++; // comparação de índice na árvore
             caux = k[p->NO.NInterno.indice];
             if (caux < p->NO.NInterno.caractere)
                 p = p->NO.NInterno.Esq;
@@ -138,12 +151,14 @@ Arvore Insere(char *k, Arvore *t, int idDoc, int *qtd_pala) {
                 p = p->NO.NInterno.Esq;
         }
         
+        comparacoes_patricia++; // comparação de igualdade de chaves
         if(strcmp(p->NO.termo.word, k) == 0) {
             incrementaOcorrencia(&p->NO.termo, idDoc);
             return (*t);
         } else {
             int tam = (strlen(k) < strlen(p->NO.termo.word)) ? strlen(k) : strlen(p->NO.termo.word);
             for(i = 0; i <= tam; i++) {
+                comparacoes_patricia++; // comparação de caracteres
                 if(k[i] != p->NO.termo.word[i]) {
                     cdif = (k[i] < p->NO.termo.word[i]) ? p->NO.termo.word[i] : k[i];
                     break;

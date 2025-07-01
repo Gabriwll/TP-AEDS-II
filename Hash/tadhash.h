@@ -8,6 +8,8 @@
 #define N 100
 #define TAMALFABETO 256
 
+extern int comparacoes_hash;
+
 typedef char TipoChave[N];
 typedef unsigned TipoPesos[N][TAMALFABETO];
 

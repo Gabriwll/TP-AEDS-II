@@ -4,6 +4,8 @@
 #include <string.h>
 #include "tadhash.h"
 
+int comparacoes_hash = 0;
+
 void FLVazia(TipoLista *Lista)
 {
     Lista->Primeiro = (TipoCelula *)malloc(sizeof(TipoCelula));
@@ -80,6 +82,7 @@ TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T, int idDoc)
     Ap = T[i].Primeiro;
     while (Ap->Prox != NULL)
     {
+        comparacoes_hash++; // Incrementa o contador de comparações
         if (strncmp(Ch, Ap->Prox->word.word, sizeof(TipoChave)) == 0 &&
             Ap->Prox->word.searchTerm.idDoc == idDoc)
         {
