@@ -124,7 +124,7 @@ void Retira(List* lista, TipoPesos p, TipoDicionario T)
 void Imp(TipoLista Lista) {
     TipoApontador Aux = Lista.Primeiro->Prox;
     while (Aux != NULL) {
-        printf("%.*s [DocID: %d, Qtde: %d] ", 
+        printf("%.*s [ID:%d,Qt:%d] ", 
             N, Aux->word.word, 
             Aux->word.searchTerm.idDoc, 
             Aux->word.searchTerm.qtde);
