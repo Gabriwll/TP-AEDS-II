@@ -1,3 +1,16 @@
+/***************************************************
+ * Universidade Federal de Viçosa - Campus Florestal
+ * Disciplina: Algoritmos e Estruturas de Dados II
+ * Período: 2025/1
+ * Trabalho Prático I - Índice Invertido com PATRICIA e HASH
+ 
+ * Integrantes:
+ * -Helom Felipe Marques Alves - 5892
+ * -Maria Eduarda Oliveira - 5365
+ * -Gabriel Luiz Magalhães Amorim - 5560 
+ * -Raíssa Tayná Xavier dos Santos - 5790 
+
+ ***************************************************/
 /**
  * @file Patricia.c
  */
