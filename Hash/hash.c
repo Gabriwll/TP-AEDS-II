@@ -14,21 +14,21 @@ short Vazia(TipoLista Lista) {
     return (Lista.Primeiro == Lista.Ultimo);
 }
 
-void Ins(TipoItem x, TipoLista *Lista) {
+void Ins(Word x, TipoLista *Lista) {
     Lista->Ultimo->Prox = (TipoCelula *)malloc(sizeof(TipoCelula));
     Lista->Ultimo = Lista->Ultimo->Prox;
-    Lista->Ultimo->Item = x;
+    Lista->Ultimo->word = x;
     Lista->Ultimo->Prox = NULL;
 }
 
-void Ret(TipoApontador p, TipoLista *Lista, TipoItem *Item) {
+void Ret(TipoApontador p, TipoLista *Lista, Word *Item) {
     TipoApontador q;
     if (Vazia(*Lista) || p == NULL || p->Prox == NULL) {
         printf(" Erro Lista vazia ou posicao nao existe\n");
         return;
     }
     q = p->Prox;
-    *Item = q->Item;
+    *Item = q->word;
     p->Prox = q->Prox;
     if (p->Prox == NULL)
         Lista->Ultimo = p;
@@ -69,20 +69,23 @@ TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T) {
     else {
         Ap = T[i].Primeiro;
         while (Ap->Prox->Prox != NULL &&
-               strncmp(Ch, Ap->Prox->Item.palavra.word, sizeof(TipoChave)))
+               strncmp(Ch, Ap->Prox->word.word, sizeof(TipoChave)))
             Ap = Ap->Prox;
-        if (!strncmp(Ch, Ap->Prox->Item.palavra.word, sizeof(TipoChave)))
+        if (!strncmp(Ch, Ap->Prox->word.word, sizeof(TipoChave)))
             return Ap;
         else
             return NULL;
     }
 }
 
-void Insere(TipoItem x, TipoPesos p, TipoDicionario T) {
-    if (Pesquisa(x.palavra.word, p, T) == NULL)
-        Ins(x, &T[h(x.palavra.word, p)]);
-    else
-        printf(" Registro ja esta presente\n");
+void Insere(List lista, TipoPesos p, TipoDicionario T) {
+    for(int i = 0; i< lista.sizeOfList; i++) {
+
+            if (Pesquisa(lista.begin->item.word, p, T) == NULL)
+            Ins(lista.begin->item, &T[h(lista.begin->item.word, p)]);
+        else
+            printf(" Registro ja esta presente\n");
+    }
 }
 
 void Retira(TipoItem x, TipoPesos p, TipoDicionario T) {
@@ -98,7 +101,7 @@ void Imp(TipoLista Lista) {
     TipoApontador Aux;
     Aux = Lista.Primeiro->Prox;
     while (Aux != NULL) {
-        printf("%.*s ", N, Aux->Item.palavra.word);
+        printf("%.*s ", N, Aux->word.word);
         Aux = Aux->Prox;
     }
 }
