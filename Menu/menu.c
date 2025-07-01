@@ -1,31 +1,50 @@
 #include "menu.h" 
 
-int inicialMenu(/* ArvorePatricia* root, Hash* hashTable */){
+void begin(){
+    int actualState = 1; // Variável para controlar o estado do menu
+    /*actualState = 1 significa que o sistema ainda não acessou memória externa
+    * actualState = 2 significa que o sistema já processou os documentos (significa que o sistema já inseriu na 
+    * estrutura de dados escolhida pelo usuário e liberou a memória auxiliar usada pelo sistema)
+    */
+
+    while(initialMenu(/* &root, &hashTable */) != 5); // Enquanto a opção não for 5 (sair), continua no menu
+}
+
+int inicialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState){
     int option;
 
-    printf(CYAN "============================================\n" RESET);
-    printf(WHITE  "     TRABALHO PRATICO DE AEDS 2    \n" RESET);
-    printf(CYAN "============================================\n\n" RESET);
+    do{
+        printf(CYAN "============================================\n" RESET);
+        printf(WHITE  "     TRABALHO PRATICO DE AEDS 2    \n" RESET);
+        printf(CYAN "============================================\n\n" RESET);
+        
+        printf("Menu de Opções:\n\n");
+        printf("Como deseja processar os documentos?\n");
+        printf("\t1. Processar os arquivos.\n");
+        printf("\t2. Imprimir tabela Hash.\n");
+        printf("\t3. Imprimir árvore Patricia.\n");
+        printf("\t4. Buscar por palavra ou termo (Hash e Patricia).\n");
+        printf("\t5. Sair\n");
+
+        scanf("%d", &option);
+        clearTerminal();
+
+    }while(!verifyAvalableOptions(actualState, option));
     
-    printf("Menu de Opções:\n\n");
-    printf("Como deseja processar os documentos?\n");
-    printf("\t1. Processar usando Patricia.\n");
-    printf("\t2. Processar usando Hash.\n");
-    printf("\t3. Sair.\n");
-/* SUGESTÃO DE MENU
-    printf("Menu de Opções:\n\n");
-    printf(CYAN "Como deseja processar os documentos?\n"  RESET);
-    printf("\t1. Processar os arquivos.\n");
-    printf("\t2. Construir os indices invertidos.\n");
-    printf("\t3. Imprimir tabela Hash.\n");
-    printf("\t4. Imprimir árvore Patricia.\n");
-    printf("\t5. Buscar por palavra ou termo (Hash e Patricia).\n");
-    printf("\t6. Sair\n");
-*/
-    scanf("%d", &option);
     processOption(option);
 
     return option;
+}
+
+int verifyAvalableOptions(int actualState, int option){
+    int isAvailable = 0; // Variável para verificar se a opção está disponível
+
+    if(actualState == 1 && (option =! 1 || option =! 5)){
+        printf(RED "Opção inválida. Tente novamente.\n" RESET);
+        return 0; // Opção inválida
+    }
+
+    return 1; // Opção válida
 }
 
 List* loadDocument(int idDoc){
@@ -50,7 +69,6 @@ int processOption(int option /* ArvorePatricia* root, Hash* hastTable */){
     List* list;
     int docQuant = getdocQuant();
 
-    clearTerminal(); // Limpa o terminal antes de processar a opção
     switch(option){
         case 1:
             IprocessOption(option, list /* root, hashTable */);

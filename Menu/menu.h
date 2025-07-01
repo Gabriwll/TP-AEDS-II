@@ -18,7 +18,9 @@
 #define RESET   "\033[0m"
 
 //TODO: terminar a implementação baseada nas estruturas
-int inicialMenu(/* ArvorePatricia* root, Hash* hashTable */);
+void begin();
+int inicialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState);
+int verifyAvalableOptions(int actualState, int option);
 List* loadDocument(int idDoc);
 int processOption(int option /* ArvorePatricia* root, Hash* hastTable */);
 int IprocessOption(int option, List* list /* ArvorePatricia* root, Hash* hashTable */);
