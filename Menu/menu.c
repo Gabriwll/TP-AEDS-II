@@ -1,4 +1,5 @@
 #include "menu.h" 
+#include "../Hash/tadhash.h"
 
 void begin(){
     int actualState = 1; // Variável para controlar o estado do menu
@@ -85,6 +86,15 @@ int processOption(int option, int* actualState /* ArvorePatricia* root, Hash* ha
 
 int IprocessOption(int option, int* actualState, List* list /* ArvorePatricia* root, Hash* hashTable */){
     int docQuant = getdocQuant();
+    static TipoDicionario tabela;
+    static TipoPesos pesos;
+    static int initialized = 0;
+
+    if(!initialized){
+        Inicializa(tabela);
+        GeraPesos(pesos);
+        initialized = 1; // Marca que a tabela e pesos foram inicializados
+    }
 
     if(option == 1){
         for(int i = 1; i <= docQuant; i++){
@@ -107,7 +117,8 @@ int IprocessOption(int option, int* actualState, List* list /* ArvorePatricia* r
                         //uma vez que essa função possui acesso a uma lista apenas.
     
     }else if(option == 3){
-        //TODO: chamar a função que insere na Hash (lá ele)
+        InsereHash(*list, pesos, tabela);
+        Imprime(tabela);
         freeList(list);
     }
 }

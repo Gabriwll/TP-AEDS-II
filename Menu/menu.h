@@ -4,8 +4,9 @@
 #include <stdio.h>
 
 #include "../FileManager/read.h"
-//#include "../Relevancia/Relevancia.h"
-//#include "../Patricia/Patricia.h"
+#include "../Relevancia/Relevancia.h"
+#include "../Relevancia/RelevanciaHash.h"
+#include "../Patricia/Patricia.h"
 #include "../Hash/tadhash.h"
 
 // ANSI cores
