@@ -18,7 +18,7 @@ void inserir_qtd_pala_arq_hash(qtd_pala_arq_hash *qtd, int qtd_pala, int indice_
 }
 
 int repeticao_pala_arq_hash(TipoDicionario ht, TipoPesos p, char *palavra, int indice_arq) {
-    TipoApontador ap = Pesquisa(palavra, p, ht, indice_arq);
+    TipoApontador ap = PesquisaHash(palavra, p, ht, indice_arq);
     if (ap != NULL) {
         return ap->Prox->word.searchTerm.qtde;
     }
@@ -28,7 +28,7 @@ int repeticao_pala_arq_hash(TipoDicionario ht, TipoPesos p, char *palavra, int i
 int repeticao_pala_total_hash(TipoDicionario ht,TipoPesos p, char *palavra) {
     int count = 0;
     for (int docId = 1; docId <= TAM; docId++) {
-        TipoApontador ap = Pesquisa(palavra, p, ht, docId);
+        TipoApontador ap = PesquisaHash(palavra, p, ht, docId);
         if (ap != NULL) count++;
     }
     return count;

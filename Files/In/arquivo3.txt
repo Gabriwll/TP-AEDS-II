@@ -1,14 +1,13 @@
-Novel Three-Input Gates for Silicon Quantum Dot
-Abstract—Atomic Silicon Quantum Dot (SQD) is a prominent
-alternative to the current Complementary Metal Oxide Semiconductor (CMOS) transistor due to the low energy consumption
-and high integration potential. This emerging technology applies
-Silicon Dangling Bonds (DBs) that behave similarly to quantumdots. Moreover, it does not require cryogenic temperatures,
-unlike other quantum-dot-based approaches. This paper proposes
-two novel 3-input gates, ORAND(x, y, z) := x ∧ (y ∨ z) and
-ANDOR(x, y, z) := x ∧ y ∨ z. Hence, we compare these 3-input
-designs with the equivalent circuits composed of 2-input gates.
-We use the state-of-the-art simulator, named SiQAD, to design
-and validate our experiments. Our main contribution is the novel
-3-input gate designs that provide area and energy reductions. We
-achieve an average of 53% energy savings for all 3-input gates
-compared to the equivalent circuit built with 2-input gates.
+A Mesh Sensor Network based on Bluetooth
+Comparing Topologies to Crop Monitoring.
+The growth of the world population increases
+the demand for food and other products from agriculture.
+Therefore, it is increasingly needed to enhance
+and optimize the productivity of farms. Through using a
+Wireless Sensor Network WSN and the application of
+the internet of things IoT technologies, we can better
+monitor the condition of farm crops. In this work, we
+designed a Bluetooth Low Energy mesh network joined
+fluorescence sensors for agricultural crop monitoring,
+and also we evaluated the suitability of this solution in
+a crop field scenario.
