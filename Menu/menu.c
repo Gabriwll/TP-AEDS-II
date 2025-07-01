@@ -7,6 +7,9 @@ void begin(){
     * estrutura de dados escolhida pelo usuário e liberou a memória auxiliar usada pelo sistema)
     */
 
+    //Patricia* root;
+    //Hash* hashTable;
+
     while(initialMenu(/* &root, &hashTable */) != 5); // Enquanto a opção não for 5 (sair), continua no menu
 }
 
@@ -69,57 +72,40 @@ int processOption(int option /* ArvorePatricia* root, Hash* hastTable */){
     List* list;
     int docQuant = getdocQuant();
 
-    switch(option){
-        case 1:
-            IprocessOption(option, list /* root, hashTable */);
-
-            //TODO: Imprime a árvore Patricia
-
-            break;
-        
-        case 2:
-            IprocessOption(option, list /* root, hashTable */);
-
-            //TODO: Imprime a tabela hash
-
-            break;
-    
-        case 3:
-            printf("Saindo do programa...\n");
-        
-            return 0; // Sair do programa
-
-        default:
-            printf("Opção inválida. Tente novamente.\n");
-            inicialMenu(); // Volta ao menu inicial
+    if(option == 5){
+        return 1; // Sair do programa
     }
+
+    IprocessOption(option, list /* root, hashTable */);
 
     return 1; // Retorna 1 para indicar que o processamento foi bem-sucedido
 }
 
 int IprocessOption(int option, List* list /* ArvorePatricia* root, Hash* hashTable */){
-    char structure[10];
     int docQuant = getdocQuant();
 
-    if(option == 1) strcpy(structure, "Patricia");
+    if(option == 1){
+        for(int i = 1; i <= docQuant; i++){
+            list = loadDocument(i);
 
-    else if(option == 2) strcpy(structure, "Hash");
-
-    for(int i = 1; i <= docQuant; i++){
-        printf("Carregando documento %d...\n", i);
-        list = loadDocument(i);
-        if(list == NULL) return 0; // Se falhar, sai da função
-
-        if(option == 1)
-            printf("Processando documento %d usando Patricia...\n", i);
-
-            //TODO: chamar a função que insere na Patricia (lá ele)
-        else if(option == 2){
-            printf("Processando documento %d usando Hash...\n", i);
-            
-            //TODO: chamar a função que insere na Hash (lá ele)
+            if(list == NULL){
+                printf("Erro ao carregar o documento %d.\n", i);
+                continue; // Pula para o próximo documento se houver erro
+            }
         }
 
+        return 1; // Retorna 1 para indicar que o processamento foi bem-sucedido
+    }
+    
+    if(option == 2)
+        printf("Processando documento %d usando Patricia...\n", i);
+        
+        //TODO: chamar a função que insere na Patricia (lá ele)
+        freeList(list);
+    else if(option == 3){
+        printf("Processando documento %d usando Hash...\n", i);
+        
+        //TODO: chamar a função que insere na Hash (lá ele)
         freeList(list);
     }
 
@@ -128,24 +114,7 @@ int IprocessOption(int option, List* list /* ArvorePatricia* root, Hash* hashTab
 }
 
 int main(){
-    // ArvorePatricia* root = NULL;
-    // Hash* hashTable = NULL;
-
-    switch(inicialMenu(/* &root, &hashTable */)){  // Chama a função inicialMenu e processa a opção retornada
-    case 1:
-        //freePatricia(&root); // Libera a memória da árvore Patricia
-        //root = NULL; // Reseta o ponteiro da árvore
-        break;
-    
-    case 2:
-        //freeHashTable(&hashTable); // Libera a memória da tabela hash
-        //hashTable = NULL; // Reseta o ponteiro da tabela hash
-        break;
-
-    default:
-        break;
-    }
-    inicialMenu(/* root, hashTable */);
+    begin();
 
     return 0;
 }
