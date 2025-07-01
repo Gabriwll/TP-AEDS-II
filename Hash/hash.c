@@ -40,7 +40,7 @@ void Ret(TipoApontador p, TipoLista *Lista, Word *Item)
     free(q);
 }
 
-void GeraPesos(TipoPesos p)
+TipoPesos* GeraPesos(TipoPesos p)
 {
     int i, j;
     struct timeval semente;
@@ -49,6 +49,7 @@ void GeraPesos(TipoPesos p)
     for (i = 0; i < N; i++)
         for (j = 0; j < TAMALFABETO; j++)
             p[i][j] = 1 + (int)(10000.0 * rand() / (RAND_MAX + 1.0));
+    return p;
 }
 
 TipoIndice h(TipoChave Chave, TipoPesos p)
@@ -90,7 +91,7 @@ TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T, int idDoc)
     return NULL;
 }
 
-void Insere(List lista, TipoPesos p, TipoDicionario T)
+void InsereHash(List lista, TipoPesos p, TipoDicionario T)
 {
     Cell *atual = lista.begin;
 

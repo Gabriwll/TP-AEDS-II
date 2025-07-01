@@ -38,7 +38,7 @@ void GeraPesos(TipoPesos p);
 TipoIndice h(TipoChave Chave, TipoPesos p);
 void Inicializa(TipoDicionario T);
 TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T, int idDoc);
-void Insere(List lista, TipoPesos p, TipoDicionario T);
+void InsereHash(List lista, TipoPesos p, TipoDicionario T);
 void Retira(List* lista, TipoPesos p, TipoDicionario T);
 void Imp(TipoLista Lista);
 void Imprime(TipoDicionario Tabela);
