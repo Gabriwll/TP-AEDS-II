@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 #include "../FileManager/read.h"
-#include "../Relevancia/Relevancia.h"
-#include "../Patricia/Patricia.h"
+//#include "../Relevancia/Relevancia.h"
+//#include "../Patricia/Patricia.h"
 #include "../Hash/tadhash.h"
 
 // ANSI cores
@@ -19,7 +19,7 @@
 
 //TODO: terminar a implementação baseada nas estruturas
 void begin();
-int inicialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState);
+int initialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState);
 int verifyAvalableOptions(int actualState, int option);
 List* loadDocument(int idDoc);
 int processOption(int option /* ArvorePatricia* root, Hash* hastTable */);

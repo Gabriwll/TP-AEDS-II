@@ -10,10 +10,10 @@ void begin(){
     //Patricia* root;
     //Hash* hashTable;
 
-    while(initialMenu(/* &root, &hashTable */) != 5); // Enquanto a opção não for 5 (sair), continua no menu
+    while(actualState != 5) actualState = initialMenu(actualState/* &root, &hashTable */); // Enquanto a opção não for 5 (sair), continua no menu
 }
 
-int inicialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState){
+int initialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState){
     int option;
 
     do{
@@ -42,7 +42,7 @@ int inicialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState){
 int verifyAvalableOptions(int actualState, int option){
     int isAvailable = 0; // Variável para verificar se a opção está disponível
 
-    if(actualState == 1 && (option =! 1 || option =! 5)){
+    if(actualState == 1 && (option != 1 && option != 5)){
         printf(RED "Opção inválida. Tente novamente.\n" RESET);
         return 0; // Opção inválida
     }
@@ -63,7 +63,7 @@ List* loadDocument(int idDoc){
     //TODO: bloco desenvolvido com intuito de teste. Remover quando não for mais necessário
     printf("Documento %d carregado e indexado com sucesso!\n", idDoc);
     printf("Conteúdo do indice invertido:\n");
-    printList(list);
+    printList(*list);
 
     return list;
 }
@@ -97,20 +97,14 @@ int IprocessOption(int option, List* list /* ArvorePatricia* root, Hash* hashTab
         return 1; // Retorna 1 para indicar que o processamento foi bem-sucedido
     }
     
-    if(option == 2)
-        printf("Processando documento %d usando Patricia...\n", i);
-        
+    if(option == 2){
         //TODO: chamar a função que insere na Patricia (lá ele)
         freeList(list);
-    else if(option == 3){
-        printf("Processando documento %d usando Hash...\n", i);
-        
+    
+    }else if(option == 3){
         //TODO: chamar a função que insere na Hash (lá ele)
         freeList(list);
     }
-
-    //clearTerminal(); // Limpa o terminal após processar todos os documentos
-    printf("Todos os documentos foram processados usando %s.\n", structure);
 }
 
 int main(){
