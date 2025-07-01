@@ -37,7 +37,7 @@ void Ret(TipoApontador p, TipoLista *Lista, Word *Item);
 void GeraPesos(TipoPesos p);
 TipoIndice h(TipoChave Chave, TipoPesos p);
 void Inicializa(TipoDicionario T);
-TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T, int idDoc);
+TipoApontador PesquisaHash(TipoChave Ch, TipoPesos p, TipoDicionario T, int idDoc);
 void InsereHash(List lista, TipoPesos p, TipoDicionario T);
 void Retira(List* lista, TipoPesos p, TipoDicionario T);
 void Imp(TipoLista Lista);

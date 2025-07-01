@@ -40,7 +40,7 @@ void Ret(TipoApontador p, TipoLista *Lista, Word *Item)
     free(q);
 }
 
-TipoPesos* GeraPesos(TipoPesos p)
+void GeraPesos(TipoPesos p)
 {
     int i, j;
     struct timeval semente;
@@ -49,7 +49,6 @@ TipoPesos* GeraPesos(TipoPesos p)
     for (i = 0; i < N; i++)
         for (j = 0; j < TAMALFABETO; j++)
             p[i][j] = 1 + (int)(10000.0 * rand() / (RAND_MAX + 1.0));
-    return p;
 }
 
 TipoIndice h(TipoChave Chave, TipoPesos p)
@@ -69,13 +68,15 @@ void Inicializa(TipoDicionario T)
         FLVazia(&T[i]);
 }
 
-TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T, int idDoc)
+TipoApontador PesquisaHash(TipoChave Ch, TipoPesos p, TipoDicionario T, int idDoc)
 {
     TipoIndice i = h(Ch, p);
     TipoApontador Ap;
 
-    if (Vazia(T[i]))
+    if (Vazia(T[i])){
+        printf("Tabela de hash vazia\n");
         return NULL;
+    }
 
     Ap = T[i].Primeiro;
     while (Ap->Prox != NULL)
@@ -97,7 +98,7 @@ void InsereHash(List lista, TipoPesos p, TipoDicionario T)
 
     while (atual != NULL)
     {
-        if (Pesquisa(atual->item.word, p, T, atual->item.searchTerm.idDoc) == NULL)
+        if (PesquisaHash(atual->item.word, p, T, atual->item.searchTerm.idDoc) == NULL)
             Ins(atual->item, &T[h(atual->item.word, p)]);
 
         else
@@ -110,7 +111,7 @@ void InsereHash(List lista, TipoPesos p, TipoDicionario T)
 void Retira(List* lista, TipoPesos p, TipoDicionario T)
 {
     TipoApontador Ap;
-    Ap = Pesquisa(lista->begin->item.word, p, T, lista->begin->item.searchTerm.idDoc);
+    Ap = PesquisaHash(lista->begin->item.word, p, T, lista->begin->item.searchTerm.idDoc);
     if (Ap == NULL)
         printf(" Registro nao esta presente\n");
     else
