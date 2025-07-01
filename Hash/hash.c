@@ -4,26 +4,31 @@
 #include <string.h>
 #include "tadhash.h"
 
-void FLVazia(TipoLista *Lista) {
+void FLVazia(TipoLista *Lista)
+{
     Lista->Primeiro = (TipoCelula *)malloc(sizeof(TipoCelula));
     Lista->Ultimo = Lista->Primeiro;
     Lista->Primeiro->Prox = NULL;
 }
 
-short Vazia(TipoLista Lista) {
+short Vazia(TipoLista Lista)
+{
     return (Lista.Primeiro == Lista.Ultimo);
 }
 
-void Ins(Word x, TipoLista *Lista) {
+void Ins(Word x, TipoLista *Lista)
+{
     Lista->Ultimo->Prox = (TipoCelula *)malloc(sizeof(TipoCelula));
     Lista->Ultimo = Lista->Ultimo->Prox;
     Lista->Ultimo->word = x;
     Lista->Ultimo->Prox = NULL;
 }
 
-void Ret(TipoApontador p, TipoLista *Lista, Word *Item) {
+void Ret(TipoApontador p, TipoLista *Lista, Word *Item)
+{
     TipoApontador q;
-    if (Vazia(*Lista) || p == NULL || p->Prox == NULL) {
+    if (Vazia(*Lista) || p == NULL || p->Prox == NULL)
+    {
         printf(" Erro Lista vazia ou posicao nao existe\n");
         return;
     }
@@ -35,7 +40,8 @@ void Ret(TipoApontador p, TipoLista *Lista, Word *Item) {
     free(q);
 }
 
-void GeraPesos(TipoPesos p) {
+void GeraPesos(TipoPesos p)
+{
     int i, j;
     struct timeval semente;
     gettimeofday(&semente, NULL);
@@ -45,7 +51,8 @@ void GeraPesos(TipoPesos p) {
             p[i][j] = 1 + (int)(10000.0 * rand() / (RAND_MAX + 1.0));
 }
 
-TipoIndice h(TipoChave Chave, TipoPesos p) {
+TipoIndice h(TipoChave Chave, TipoPesos p)
+{
     int i;
     unsigned int Soma = 0;
     int comp = strlen(Chave);
@@ -54,61 +61,78 @@ TipoIndice h(TipoChave Chave, TipoPesos p) {
     return (Soma % M);
 }
 
-void Inicializa(TipoDicionario T) {
+void Inicializa(TipoDicionario T)
+{
     int i;
     for (i = 0; i < M; i++)
         FLVazia(&T[i]);
 }
 
-TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T) {
-    TipoIndice i;
+TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T, int idDoc)
+{
+    TipoIndice i = h(Ch, p);
     TipoApontador Ap;
-    i = h(Ch, p);
+
     if (Vazia(T[i]))
         return NULL;
-    else {
-        Ap = T[i].Primeiro;
-        while (Ap->Prox->Prox != NULL &&
-               strncmp(Ch, Ap->Prox->word.word, sizeof(TipoChave)))
-            Ap = Ap->Prox;
-        if (!strncmp(Ch, Ap->Prox->word.word, sizeof(TipoChave)))
+
+    Ap = T[i].Primeiro;
+    while (Ap->Prox != NULL)
+    {
+        if (strncmp(Ch, Ap->Prox->word.word, sizeof(TipoChave)) == 0 &&
+            Ap->Prox->word.searchTerm.idDoc == idDoc)
+        {
             return Ap;
-        else
-            return NULL;
+        }
+        Ap = Ap->Prox;
     }
+
+    return NULL;
 }
 
-void Insere(List lista, TipoPesos p, TipoDicionario T) {
-    for(int i = 0; i< lista.sizeOfList; i++) {
+void Insere(List lista, TipoPesos p, TipoDicionario T)
+{
+    Cell *atual = lista.begin;
 
-            if (Pesquisa(lista.begin->item.word, p, T) == NULL)
-            Ins(lista.begin->item, &T[h(lista.begin->item.word, p)]);
+    while (atual != NULL)
+    {
+        if (Pesquisa(atual->item.word, p, T, atual->item.searchTerm.idDoc) == NULL)
+            Ins(atual->item, &T[h(atual->item.word, p)]);
+
         else
             printf(" Registro ja esta presente\n");
+
+        atual = atual->next;
     }
 }
 
-void Retira(TipoItem x, TipoPesos p, TipoDicionario T) {
+void Retira(List* lista, TipoPesos p, TipoDicionario T)
+{
     TipoApontador Ap;
-    Ap = Pesquisa(x.palavra.word, p, T);
+    Ap = Pesquisa(lista->begin->item.word, p, T, lista->begin->item.searchTerm.idDoc);
     if (Ap == NULL)
         printf(" Registro nao esta presente\n");
     else
-        Ret(Ap, &T[h(x.palavra.word, p)], &x);
+        Ret(Ap, &T[h(lista->begin->item.word, p)], &lista->begin->item);
 }
 
 void Imp(TipoLista Lista) {
-    TipoApontador Aux;
-    Aux = Lista.Primeiro->Prox;
+    TipoApontador Aux = Lista.Primeiro->Prox;
     while (Aux != NULL) {
-        printf("%.*s ", N, Aux->word.word);
+        printf("%.*s [DocID: %d, Qtde: %d] ", 
+            N, Aux->word.word, 
+            Aux->word.searchTerm.idDoc, 
+            Aux->word.searchTerm.qtde);
         Aux = Aux->Prox;
     }
 }
 
-void Imprime(TipoDicionario Tabela) {
+
+void Imprime(TipoDicionario Tabela)
+{
     int i;
-    for (i = 0; i < M; i++) {
+    for (i = 0; i < M; i++)
+    {
         printf("%d: ", i);
         if (!Vazia(Tabela[i]))
             Imp(Tabela[i]);
@@ -116,7 +140,8 @@ void Imprime(TipoDicionario Tabela) {
     }
 }
 
-void LerPalavra(char *p, int Tam) {
+void LerPalavra(char *p, int Tam)
+{
     char c;
     int i, j;
     fflush(stdin);

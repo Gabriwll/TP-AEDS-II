@@ -85,6 +85,7 @@ char* setFileName(char fileName[], int idDoc){
 /*FIXME: remover esse ambiente de testes assim que o funcionamento total desse TAD seja comprovado
 * Uma alternativa seria manter esse ambiente em um branch secundário, a fim de uso na entrevista
 */
+/*
 int main(){
     List* list;
     int docQuant = getdocQuant();
@@ -99,3 +100,4 @@ int main(){
 
     return 0;
 }
+*/

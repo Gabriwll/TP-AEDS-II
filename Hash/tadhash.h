@@ -4,8 +4,8 @@
 #include "../InvertedIndex/invertedIndex.h" 
 #include "../LinkedList/linkedList.h"
 
-#define M 7
-#define N 7
+#define M 100
+#define N 100
 #define TAMALFABETO 256
 
 typedef char TipoChave[N];
@@ -32,14 +32,14 @@ typedef TipoLista TipoDicionario[M];
 // Funções
 void FLVazia(TipoLista *Lista);
 short Vazia(TipoLista Lista);
-void Ins(TipoItem x, TipoLista *Lista);
-void Ret(TipoApontador p, TipoLista *Lista, TipoItem *Item);
+void Ins(Word x, TipoLista *Lista);
+void Ret(TipoApontador p, TipoLista *Lista, Word *Item);
 void GeraPesos(TipoPesos p);
 TipoIndice h(TipoChave Chave, TipoPesos p);
 void Inicializa(TipoDicionario T);
-TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T);
-void Insere(TipoItem x, TipoPesos p, TipoDicionario T);
-void Retira(TipoItem x, TipoPesos p, TipoDicionario T);
+TipoApontador Pesquisa(TipoChave Ch, TipoPesos p, TipoDicionario T, int idDoc);
+void Insere(List lista, TipoPesos p, TipoDicionario T);
+void Retira(List* lista, TipoPesos p, TipoDicionario T);
 void Imp(TipoLista Lista);
 void Imprime(TipoDicionario Tabela);
 void LerPalavra(char *p, int Tam);
