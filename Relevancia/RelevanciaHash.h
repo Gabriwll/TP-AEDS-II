@@ -27,10 +27,10 @@ typedef struct WHash {
 void iniciar_qtd_pala_arq_hash(qtd_pala_arq_hash *qtd);
 void iniciar_W_hash(WHash *w);
 void inserir_qtd_pala_arq_hash(qtd_pala_arq_hash *qtd, int qtd_pala, int indice_arq);
-int repeticao_pala_arq_hash(HashTable *ht, char *palavra, int indice_arq);
-int repeticao_pala_total_hash(HashTable *ht, char *palavra);
-double peso_W_hash(HashTable *ht, char *palavra, int indice_arq);
-void inserir_peso_hash(relevanciaHash *rel, int indice_arq, HashTable *ht, char *palavra, WHash *p_w);
+int repeticao_pala_arq_hash(TipoDicionario ht, TipoPesos p, char *palavra, int indice_arq);
+int repeticao_pala_total_hash(TipoDicionario ht,TipoPesos p, char *palavra);
+double peso_W_hash(TipoDicionario ht, TipoPesos p, char *palavra, int indice_arq);
+void inserir_peso_hash(relevanciaHash *rel, int indice_arq, TipoDicionario ht, TipoPesos p, char *palavra, WHash *p_w);
 void preencher_relevancia_hash(relevanciaHash *rel, WHash w, qtd_pala_arq_hash qtd);
 
 #endif

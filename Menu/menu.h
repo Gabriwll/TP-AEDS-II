@@ -22,8 +22,8 @@ void begin();
 int initialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState);
 int verifyAvalableOptions(int actualState, int option);
 List* loadDocument(int idDoc);
-int processOption(int option /* ArvorePatricia* root, Hash* hastTable */);
-int IprocessOption(int option, List* list /* ArvorePatricia* root, Hash* hashTable */);
+int processOption(int option, int* actualState /* ArvorePatricia* root, Hash* hastTable */);
+int IprocessOption(int option, int* actualState, List* list /* ArvorePatricia* root, Hash* hashTable */);
 
 #ifdef _WIN32
 #define clearTerminal() system("cls") // Para Windows

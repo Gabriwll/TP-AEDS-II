@@ -2,11 +2,11 @@
 
 void begin(){
     int actualState = 1; // Variável para controlar o estado do menu
-    /*actualState = 1 significa que o sistema ainda não acessou memória externa
-    * actualState = 2 significa que o sistema já processou os documentos (significa que o sistema já inseriu na 
-    * estrutura de dados escolhida pelo usuário e liberou a memória auxiliar usada pelo sistema)
+    /*actualState = 1 significa que o sistema ainda não acessou memória externa, nem processou os documentos e elaborou
+    * o índice invertido. Dessa maneira, não pode utilizar funções relacionadas a Patricia e Hash.
+    * actualState = 0 significa que o sistema já processou os documentos e elaborou o índice invertido, podendo utilizar
+    * funções relacionadas a Patricia e Hash.
     */
-
     //Patricia* root;
     //Hash* hashTable;
 
@@ -33,10 +33,10 @@ int initialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState){
         clearTerminal();
 
     }while(!verifyAvalableOptions(actualState, option));
-    
-    processOption(option);
 
-    return option;
+    processOption(option, &actualState /* &root, &hashTable */);
+
+    return option == 5 ? option : actualState; // Retorna 5 para sair ou o novo estado do menu
 }
 
 int verifyAvalableOptions(int actualState, int option){
@@ -61,14 +61,16 @@ List* loadDocument(int idDoc){
     }
 
     //TODO: bloco desenvolvido com intuito de teste. Remover quando não for mais necessário
+    /*
     printf("Documento %d carregado e indexado com sucesso!\n", idDoc);
     printf("Conteúdo do indice invertido:\n");
     printList(*list);
+    */
 
     return list;
 }
 
-int processOption(int option /* ArvorePatricia* root, Hash* hastTable */){
+int processOption(int option, int* actualState /* ArvorePatricia* root, Hash* hastTable */){
     List* list;
     int docQuant = getdocQuant();
 
@@ -76,12 +78,12 @@ int processOption(int option /* ArvorePatricia* root, Hash* hastTable */){
         return 1; // Sair do programa
     }
 
-    IprocessOption(option, list /* root, hashTable */);
+    IprocessOption(option, actualState, list /* root, hashTable */);
 
     return 1; // Retorna 1 para indicar que o processamento foi bem-sucedido
 }
 
-int IprocessOption(int option, List* list /* ArvorePatricia* root, Hash* hashTable */){
+int IprocessOption(int option, int* actualState, List* list /* ArvorePatricia* root, Hash* hashTable */){
     int docQuant = getdocQuant();
 
     if(option == 1){
@@ -94,12 +96,15 @@ int IprocessOption(int option, List* list /* ArvorePatricia* root, Hash* hashTab
             }
         }
 
+        *actualState = 0; //Libera acesso a funções relacionadas a Patricia e Hash
+
         return 1; // Retorna 1 para indicar que o processamento foi bem-sucedido
     }
     
     if(option == 2){
         //TODO: chamar a função que insere na Patricia (lá ele)
-        freeList(list);
+        freeList(list); //FIXME: liberar memória da lista aqui não fará com que todas as listas sejam liberadas,
+                        //uma vez que essa função possui acesso a uma lista apenas.
     
     }else if(option == 3){
         //TODO: chamar a função que insere na Hash (lá ele)
