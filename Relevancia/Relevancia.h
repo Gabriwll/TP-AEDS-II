@@ -8,11 +8,7 @@
 
 #include "../Patricia/Patricia.h"
 
-/**
- * @def TAM
- * @brief Quantidade máxima de arquivos/documents a serem processados
- */
-#define TAM 5
+#define TAM 100
 
 /**
  * @struct relevancia
