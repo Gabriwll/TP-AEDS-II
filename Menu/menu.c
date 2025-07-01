@@ -1,5 +1,4 @@
 #include "menu.h" 
-#include "../Hash/tadhash.h"
 
 void begin(){
     int actualState = 1; // Variável para controlar o estado do menu
@@ -8,13 +7,25 @@ void begin(){
     * actualState = 0 significa que o sistema já processou os documentos e elaborou o índice invertido, podendo utilizar
     * funções relacionadas a Patricia e Hash.
     */
+    int docQuant = getdocQuant(); // Obtém a quantidade de documentos
+    List* list[docQuant]; // Array de listas para armazenar os documentos
+    
     //Patricia* root;
-    //Hash* hashTable;
 
-    while(actualState != 5) actualState = initialMenu(actualState/* &root, &hashTable */); // Enquanto a opção não for 5 (sair), continua no menu
+    static TipoDicionario table;
+    static TipoPesos weights;
+    static int initialized = 0;
+    
+
+
+    while(actualState != 5) actualState = initialMenu(/* Patricia */ &table, &weights, initialized, actualState); // Enquanto a opção não for 5 (sair), continua no menu
+
+    for(int i = 0; i < docQuant; i++){
+        freeList(list[i]); // Libera a memória alocada para cada lista de documentos
+    }
 }
 
-int initialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState){
+int initialMenu(/* ArvorePatricia* root,*/ TipoDicionario* table, TipoPesos* weights, int initialized, int actualState){
     int option;
 
     do{
@@ -35,7 +46,7 @@ int initialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState){
 
     }while(!verifyAvalableOptions(actualState, option));
 
-    processOption(option, &actualState /* &root, &hashTable */);
+    processOption(option, &actualState /* &root, &hashTable */, table, weights, initialized);
 
     return option == 5 ? option : actualState; // Retorna 5 para sair ou o novo estado do menu
 }
@@ -71,7 +82,7 @@ List* loadDocument(int idDoc){
     return list;
 }
 
-int processOption(int option, int* actualState /* ArvorePatricia* root, Hash* hastTable */){
+int processOption(int option, int* actualState /* ArvorePatricia* root */, TipoDicionario* table, TipoPesos* weights, int initialized){
     List* list;
     int docQuant = getdocQuant();
 
@@ -79,22 +90,19 @@ int processOption(int option, int* actualState /* ArvorePatricia* root, Hash* ha
         return 1; // Sair do programa
     }
 
-    IprocessOption(option, actualState, list /* root, hashTable */);
+    IprocessOption(option, actualState, list /* root, hashTable */, table, weights, initialized);
 
     return 1; // Retorna 1 para indicar que o processamento foi bem-sucedido
 }
 
-int IprocessOption(int option, int* actualState, List* list /* ArvorePatricia* root, Hash* hashTable */){
+int IprocessOption(int option, int* actualState, List* list /* ArvorePatricia* root */, TipoDicionario* table, TipoPesos* weights, int initialized){
     int docQuant = getdocQuant();
-    static TipoDicionario tabela;
-    static TipoPesos pesos;
-    static int initialized = 0;
 
     if(!initialized){
-        Inicializa(tabela);
-        GeraPesos(pesos);
+        Inicializa(*table);
+        GeraPesos(*weights);
         initialized = 1; // Marca que a tabela e pesos foram inicializados
-    }
+    }    
 
     if(option == 1){
         for(int i = 1; i <= docQuant; i++){
@@ -117,9 +125,8 @@ int IprocessOption(int option, int* actualState, List* list /* ArvorePatricia* r
                         //uma vez que essa função possui acesso a uma lista apenas.
     
     }else if(option == 3){
-        InsereHash(*list, pesos, tabela);
-        Imprime(tabela);
-        freeList(list);
+        InsereHash(*list, *weights, *table);
+        Imprime(*table);
     }
 }
 

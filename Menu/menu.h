@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "../FileManager/read.h"
-#include "../Relevancia/Relevancia.h"
+//#include "../Relevancia/Relevancia.h"
 #include "../Relevancia/RelevanciaHash.h"
 #include "../Patricia/Patricia.h"
 #include "../Hash/tadhash.h"
@@ -20,11 +20,11 @@
 
 //TODO: terminar a implementação baseada nas estruturas
 void begin();
-int initialMenu(/* ArvorePatricia* root, Hash* hashTable, */ int actualState);
+int initialMenu(/* ArvorePatricia* root,*/ TipoDicionario* table, TipoPesos* weights, int initialized, int actualState);
 int verifyAvalableOptions(int actualState, int option);
 List* loadDocument(int idDoc);
-int processOption(int option, int* actualState /* ArvorePatricia* root, Hash* hastTable */);
-int IprocessOption(int option, int* actualState, List* list /* ArvorePatricia* root, Hash* hashTable */);
+int processOption(int option, int* actualState /* ArvorePatricia* root */, TipoDicionario* table, TipoPesos* weights, int initialized);
+int IprocessOption(int option, int* actualState, List* list /* ArvorePatricia* root */, TipoDicionario* table, TipoPesos* weights, int initialized);
 
 #ifdef _WIN32
 #define clearTerminal() system("cls") // Para Windows
